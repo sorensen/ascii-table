@@ -156,7 +156,7 @@ License
 
 (The MIT License)
 
-Copyright (c) 2013 Major League Soccer
+Copyright (c) 2013 Beau Sorensen
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
