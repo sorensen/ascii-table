@@ -128,6 +128,7 @@ Table.prototype.setAlignRight = function(idx) {
 Table.alignLeft = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
+  if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   return str + Array(len + 1 - str.length).join(pad)
 }
@@ -144,6 +145,7 @@ Table.alignLeft = function(str, len, pad) {
 Table.alignCenter = function(str, len, pad, color) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
+  if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var nLen = str.length
     , half = Math.floor(len / 2 - nLen / 2)
@@ -168,6 +170,7 @@ Table.alignCenter = function(str, len, pad, color) {
 Table.alignRight = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
+  if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   return Array(len + 1 - str.length).join(pad) + str
 }

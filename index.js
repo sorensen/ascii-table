@@ -1,1 +1,1 @@
-module.exports = require('./console-table')
+module.exports = require('./ascii-table')
