@@ -24,11 +24,14 @@ var slice = Array.prototype.slice
 
 function Table(name) {
   this.__name = name
+  this.__nameAlign = Table.CENTER
   this.__rows = []
   this.__maxCells = 0
   this.__aligns = []
   this.__colMaxes = []
   this.__spacing = 1
+  this.__heading = null
+  this.__headingAlign = Table.CENTER
   this.setBorder()
 }
 
@@ -114,6 +117,13 @@ Table.prototype.setAlignCenter = function(idx) {
 
 Table.prototype.setAlignRight = function(idx) {
   return this.setAlign(idx, Table.RIGHT)
+}
+
+Table.align = function(dir, str, len, pad) {
+  if (dir === Table.LEFT) return Table.alignLeft(str, len, pad)
+  if (dir === Table.RIGHT) return Table.alignRight(str, len, pad)
+  if (dir === Table.CENTER) return Table.alignCenter(str, len, pad)
+  return Table.alignAuto(str, len, pad)
 }
 
 /**
@@ -230,6 +240,14 @@ Table.prototype.setTitle = function(name) {
   return this
 }
 
+Table.prototype.setTitleAlign = function(dir) {
+  this.__nameAlign = dir
+  return this
+}
+Table.prototype.setTitleAlignLeft = function() { return this.setTitleAlign(Table.LEFT) }
+Table.prototype.setTitleAlignRight = function() { return this.setTitleAlign(Table.RIGHT) }
+Table.prototype.setTitleAlignCenter = function() { return this.setTitleAlign(Table.CENTER) }
+
 /**
  * Table sorting shortcut to sort rows
  *
@@ -267,6 +285,14 @@ Table.prototype.setHeading = function() {
   this.__heading = slice.call(arguments)
   return this
 }
+Table.prototype.setHeadingAlign = function(dir) {
+  this.__headingAlign = dir
+  return this
+}
+Table.prototype.setHeadingAlignLeft = function() { return this.setHeadingAlign(Table.LEFT) }
+Table.prototype.setHeadingAlignRight = function() { return this.setHeadingAlign(Table.RIGHT) }
+Table.prototype.setHeadingAlignCenter = function() { return this.setHeadingAlign(Table.CENTER) }
+
 
 /**
  * Add a row of information to the table
@@ -300,6 +326,7 @@ Table.prototype.setJustify = function(val) {
  * @api public
  */
 
+Table.prototype.render =
 Table.prototype.valueOf =
 Table.prototype.toString = function() {
   var self = this
@@ -339,7 +366,7 @@ Table.prototype.toString = function() {
     border && body.push(this._seperator(total))
   }
   if (this.__heading) {
-    body.push(this._renderRow(this.__heading, ' ', Table.CENTER, 'cyan'))
+    body.push(this._renderRow(this.__heading, ' ', this.__headingAlign, 'cyan'))
     body.push(this._rowSeperator(mLen, this.__fill))
   }
   for (var i = 0; i < this.__rows.length; i++) {
@@ -381,8 +408,8 @@ Table.prototype._rowSeperator = function() {
  */
 
 Table.prototype._renderTitle = function(len) {
-  var str = Table.alignCenter(this.__name, len, ' ')
-  str = str.substr(0, str.length - 1)
+  var name = ' ' + this.__name + ' '
+    , str = Table.align(this.__nameAlign, name, len - 1, ' ')
   return this.__edge + str + this.__edge
 }
 

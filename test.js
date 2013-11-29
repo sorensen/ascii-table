@@ -8,6 +8,32 @@ var assert = require('assert')
 
 describe('Ascii Table v' + info.version, function() {
 
+  describe('Demo', function() {
+    var table = new Table()
+    table
+      .setTitle('Something')
+      .setTitleAlign(Table.LEFT)
+      .setHeading('', 'Name', 'Age')
+      .setHeadingAlign(Table.RIGHT)
+      .addRow('a', 'apple', 'Some longer string')
+      .addRow('b', 'banana', 'hi')
+      .addRow('c', 'carrot', 'meow')
+      .addRow('e', 'elephants')
+
+    var str = ""
+             + ".--------------------------------------."
+      + "\n" + "| Something                            |"
+      + "\n" + "|--------------------------------------|"
+      + "\n" + "|    |       Name |                Age |"
+      + "\n" + "|----|------------|--------------------|"
+      + "\n" + "| a  | apple      | Some longer string |"
+      + "\n" + "| b  | banana     | hi                 |"
+      + "\n" + "| c  | carrot     | meow               |"
+      + "\n" + "| e  | elephants  |                    |"
+      + "\n" + "'--------------------------------------'"
+    ase(str, table.toString())
+  })
+
   describe('Static methods', function() {
 
     it('#version', function() {
