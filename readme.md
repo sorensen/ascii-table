@@ -53,6 +53,16 @@ console.log(table.toString())
 '------------------'
 ```
 
+Or if we use data from variables
+
+```js
+var table = new Table('A Title')
+table.setHeading.apply(table, arrayOfHeadings);
+for (var i in rows) {
+  table.addRow.apply(table, rows[i]);
+}
+```
+
 Lets sort by age
 
 ```js
