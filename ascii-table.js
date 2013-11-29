@@ -39,7 +39,7 @@ function Table(name) {
  * Current library version, should match `package.json`
  */
 
-Table.VERSION = '0.0.1'
+Table.VERSION = '0.0.2'
 
 /*!
  * Alignment constants
