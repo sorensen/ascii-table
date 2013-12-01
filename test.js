@@ -121,6 +121,8 @@ describe('Ascii Table v' + info.version, function() {
 
     it('#version', function() {
       ase(info.version, AsciiTable.VERSION)
+      ase(info.version, require('./ascii-table.min').VERSION)
+      ase(info.version, require('./bower.json').version)
     })
 
     it('#align', function() {
