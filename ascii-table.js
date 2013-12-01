@@ -18,20 +18,13 @@ var slice = Array.prototype.slice
 /**
  * Table constructor
  *
- * @param {String} name
+ * @param {String|Object} title or JSON table
+ * @constructor
+ * @api public
  */
 
 function Table(name) {
-  this.__name = name
-  this.__nameAlign = Table.CENTER
-  this.__rows = []
-  this.__maxCells = 0
-  this.__aligns = []
-  this.__colMaxes = []
-  this.__spacing = 1
-  this.__heading = null
-  this.__headingAlign = Table.CENTER
-  this.setBorder()
+  this.reset(name)
 }
 
 /*!
@@ -48,10 +41,14 @@ Table.LEFT = 0
 Table.CENTER = 1
 Table.RIGHT = 2
 
+/*!
+ * Static methods
+ */
+
 /**
  * Create a new table instance
  *
- * @param {String} name
+ * @param {String|Object} title or JSON table
  * @api public
  */
 
@@ -175,6 +172,37 @@ Table.arrayFill = function(len, fill) {
     arr[i] = fill;
   }
   return arr
+}
+
+/*!
+ * Instance methods
+ */
+
+/**
+ * Reset the table state back to defaults
+ *
+ * @param {String|Object} title or JSON table
+ * @api public
+ */
+
+Table.prototype.reset = 
+Table.prototype.clear = function(name) {
+  this.__name = ''
+  this.__nameAlign = Table.CENTER
+  this.__rows = []
+  this.__maxCells = 0
+  this.__aligns = []
+  this.__colMaxes = []
+  this.__spacing = 1
+  this.__heading = null
+  this.__headingAlign = Table.CENTER
+  this.setBorder()
+
+  if (toString.call(name) === '[object String]') {
+    this.__name = name
+  } else if (toString.call(name) === '[object Object]') {
+    this.fromJSON(name)
+  }
 }
 
 /**
@@ -368,6 +396,19 @@ Table.prototype.addRowMatrix = function(rows) {
 }
 
 /**
+ * Reset the current row state
+ *
+ * @api public
+ */
+
+Table.prototype.clearRows = function() {
+  this.__rows = []
+  this.__maxCells = 0
+  this.__colMaxes = []
+  return this
+}
+
+/**
  * Apply an even spaced column justification
  *
  * @param {Boolean} on / off
@@ -384,6 +425,7 @@ Table.prototype.setJustify = function(val) {
  * Convert the current instance to a JSON structure
  *
  * @return {Object} json representation
+ * @api public
  */
 
 Table.prototype.toJSON = function() {
@@ -392,6 +434,21 @@ Table.prototype.toJSON = function() {
   , heading: this.getHeading()
   , rows: this.getRows()
   }
+}
+
+/**
+ * Populate the table from a JSON object
+ *
+ * @param {Object} json representation
+ * @api public
+ */
+
+Table.prototype.fromJSON = function(obj) {
+  return this
+    .clear()
+    .setTitle(obj.title)
+    .setHeading(obj.heading)
+    .addRowMatrix(obj.rows)
 }
 
 /**
@@ -435,10 +492,10 @@ Table.prototype.toString = function() {
   total -= this.__spacing
 
   // Heading
-  border && body.push(this._seperator(total, this.__top))
+  border && body.push(this._seperator(total - mLen + 1, this.__top))
   if (this.__name) {
-    body.push(this._renderTitle(total))
-    border && body.push(this._seperator(total))
+    body.push(this._renderTitle(total - mLen + 1))
+    border && body.push(this._seperator(total - mLen + 1))
   }
   if (this.__heading) {
     body.push(this._renderRow(this.__heading, ' ', this.__headingAlign))
@@ -447,7 +504,7 @@ Table.prototype.toString = function() {
   for (var i = 0; i < this.__rows.length; i++) {
     body.push(this._renderRow(this.__rows[i], ' '))
   }
-  border && body.push(this._seperator(total, this.__bottom))
+  border && body.push(this._seperator(total - mLen + 1, this.__bottom))
   return body.join('\n')
 }
 
@@ -507,7 +564,8 @@ Table.prototype._renderRow = function(row, str, align) {
   for (var k = 0; k < this.__maxCells; k++) {
     var cell = row[k]
       , just = this.__justify ? Math.max.apply(null, max) : max[k]
-      , pad = k === this.__maxCells - 1 ? just : just + this.__spacing
+      // , pad = k === this.__maxCells - 1 ? just : just + this.__spacing
+      , pad = just
       , cAlign = this.__aligns[k]
       , use = align
       , method = 'alignAuto'

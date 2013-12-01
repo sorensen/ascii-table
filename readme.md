@@ -4,7 +4,7 @@ Ascii Table
 [![Build Status](https://secure.travis-ci.org/sorensen/ascii-table.png)](http://travis-ci.org/sorensen/ascii-table) 
 
 Easy table output for node debugging, but you could probably do more with it, 
-since its just an string.
+since its just a string.
 
 
 Usage
@@ -42,71 +42,18 @@ console.log(table.toString())
 ```
 
 ```
-.------------------.
-|      A Title     |
-|------------------|
-|    | Name  | Age |
-|----|-------|-----|
-|  1 | Bob   |  52 |
-|  2 | John  |  34 |
-|  3 | Jim   |  83 |
-'------------------'
+.----------------.
+|    A Title     |
+|----------------|
+|   | Name | Age |
+|---|------|-----|
+| 1 | Bob  |  52 |
+| 2 | John |  34 |
+| 3 | Jim  |  83 |
+'----------------'
 ```
 
-Or if we use data from arrays
-
-```js
-var table = new AsciiTable('A Title')
-  , headings = ['', 'Name', 'Age']
-  , row = [1, 'Bob', 52]
-
-var matrix = [
-  [2, 'John', 34]
-, [3, 'Jim', 83]
-]
-
-table
-  .setHeading(heading)
-  .addRow(row)
-  .addRowMatrix(matrix)
-
-console.log(table.render())
-```
-
-```
-.------------------.
-|      A Title     |
-|------------------|
-|    | Name  | Age |
-|----|-------|-----|
-|  1 | Bob   |  52 |
-|  2 | John  |  34 |
-|  3 | Jim   |  83 |
-'------------------'
-```
-
-Lets sort by age
-
-```js
-table.sortColumn(2, function(a, b) {
-  return a - b
-})
-console.log(table.toString())
-```
-
-```
-.------------------.
-|      A Title     |
-|------------------|
-|    | Name  | Age |
-|----|-------|-----|
-|  2 | John  |  34 |
-|  1 | Bob   |  52 |
-|  3 | Jim   |  83 |
-'------------------'
-```
-
-We can make a simple table as well.
+We can make a simple table without a title or headings as well.
 
 ```js
 var table = new AsciiTable()
@@ -122,16 +69,191 @@ console.log(table.toString())
 ```
 
 ```
-.--------------------------------------.
-| a  | apple      | Some longer string |
-| b  | banana     | hi                 |
-| c  | carrot     | meow               |
-| e  | elephants  |                    |
-'--------------------------------------'
+.------------------------------------.
+| a | apple     | Some longer string |
+| b | banana    | hi                 |
+| c | carrot    | meow               |
+| e | elephants |                    |
+'------------------------------------'
 ```
 
 
-Columns can also have different alignments
+Methods
+-------
+
+#### AsciiTable
+
+See: `AsciiTable.factory` for details on instantiation
+
+#### AsciiTable.factory([title])
+
+Table instance creator
+
+* `title` - table title (optional, default `null`)
+
+***Note:*** If an object is passed in place of the `title`, the `fromJSON` 
+method will be used to populate the table.
+
+Example:
+
+```js
+var table = AsciiTable.factory('title')
+
+var table = AsciiTable.factory({
+  title: 'Title'
+, heading: [ 'id', 'name' ]
+, rows: [ 
+    [ 1, 'Bob' ]
+  , [ 2, 'Steve' ] 
+  ] 
+})
+```
+
+
+#### AsciiTable.align(direction, value, length, [padding])
+
+Shortcut to one of the three following methods
+
+* `direction` - alignment direction (`AsciiTable.LEFT`, `AsciiTable.CENTER`, `AsciiTable.RIGHT`)
+* `value` - string to align
+* `length` - total length of created string
+* `padding` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
+```
+
+
+#### AsciiTable.alignLeft(value, length, [padding])
+
+* `value` - string to align
+* `length` - total length of created string
+* `padding` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
+```
+
+
+#### AsciiTable.alignCenter(value, length, [padding])
+
+* `value` - string to align
+* `length` - total length of created string
+* `padding` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.align(AsciiTable.CENTER, 'hey', 7) // '  hey  '
+```
+
+
+#### AsciiTable.alignRight(value, length, [padding])
+
+* `value` - string to align
+* `length` - total length of created string
+* `padding` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.align(AsciiTable.LEFT, 'hey', 7) // '    hey'
+```
+
+
+#### AsciiTable.alignAuto(value, length, [padding])
+
+Attempt to do intelligent alignment of provided `value`, `String` input will 
+be left aligned, `Number` types will be right aligned.
+
+* `string` - string to align
+* `length` - total length of created string
+* `padding` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
+```
+
+
+#### AsciiTable.arrayFill(length, value)
+
+Create a new array at the given length, filled with the given value, mainly used internally
+
+* `length` - length of array
+* `value` - fill value (optional)
+
+Example:
+
+```js
+AsciiTable.arrayFill(4, 0) // [0, 0, 0, 0]
+```
+
+
+#### instance.setBorder([edge], [fill], [top], [bottom])
+
+Set the border characters for rendering, if no arguments are passed it will be 
+reset to defaults. If a single `edge` arg is passed, it will be used for all borders.
+
+* `edge` - horizontal edges (optional, default `|`)
+* `fill` - vertical edges (optional, default `-`)
+* `top` - top corners (optional, default `.`)
+* `bottom` - bottom corners (optional, default `'`)
+
+Example:
+
+```js
+var table = new AsciiTable('Stars')
+table
+  .setBorder('*')
+  .setHeading('oh', 'look')
+  .addRow('so much', 'star power')
+
+console.log(table.toString())
+```
+
+```
+************************
+*        Stars         *
+************************
+*   oh    *    look    *
+************************
+* so much * star power *
+************************
+```
+
+
+#### instance.removeBorder()
+
+Example:
+
+```js
+table.removeBorder()
+
+console.log('' + table)
+```
+
+```
+  #     Fruit           Thing
+ --- ----------- --------------------
+  a       apple   Some longer string
+  b      banana           hi
+  c      carrot          meow
+  e   elephants
+```
+
+
+#### instance.setAlign(idx, direction)
+
+* `idx` - column index to align
+* `direction` - alignment direction, (`AsciiTable.LEFT`, `AsciiTable.CENTER`, `AsciiTable.RIGHT`)
+
+Example:
 
 ```js
 table
@@ -142,291 +264,284 @@ console.log(table.toString())
 ```
 
 ```
-.--------------------------------------.
-| a  |   apple    | Some longer string |
-| b  |   banana   |                 hi |
-| c  |   carrot   |               meow |
-| e  | elephants  |                    |
-'--------------------------------------'
+.-------------------------------------.
+| a  |   apple   | Some longer string |
+| b  |   banana  |                 hi |
+| c  |   carrot  |               meow |
+| e  | elephants |                    |
+'-------------------------------------'
 ```
 
-We can also remove the borders
+
+#### instance.setAlignLeft(idx)
+
+Alias to `instance.setAlign(idx, AsciiTable.LEFT)`
+
+
+#### instance.setAlignCenter(idx)
+
+Alias to `instance.setAlign(idx, AsciiTable.CENTER)`
+
+
+#### instance.setAlignRight(idx)
+
+Alias to `instance.setAlign(idx, AsciiTable.RIGHT)`
+
+
+#### instance.setTitle(title)
+
+* `title` - table title
+
+Example:
 
 ```js
+var table = new AsciiTable('Old Title')
 
-table
-  .setHeading('#', 'Fruit', 'Thing')
-  .setAlign(1, AsciiTable.RIGHT)
-  .setAlign(2, AsciiTable.CENTER)
-  .removeBorder()
-  
-console.log('' + table)
+table.setTitle('New Title')
 ```
 
-```
-  #      Fruit            Thing
- ---- ------------ --------------------
-  a         apple   Some longer string
-  b        banana           hi
-  c        carrot          meow
-  e     elephants
-```
+#### instance.getTitle()
 
-Methods
--------
+Get the current title of the table
 
-### AsciiTable
-
-See: `AsciiTable.factory` for details on instantiation
-
-### AsciiTable.factory([title])
-
-Table instance creator
-
-* `title` - table title (optional, default `null`)
+Example:
 
 ```js
-var table = AsciiTable.factory('')
+table.getTitle() // 'New Title'
 ```
 
 
-### AsciiTable.align(direction, value, length, [padding])
+#### instance.setTitleAlign(direction)
 
-Shortcut to one of the three following methods
+* `direction` - table alignment direction
 
-* `direction` - alignment direction (`AsciiTable.LEFT`, `AsciiTable.CENTER`, `AsciiTable.RIGHT`)
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-```js
-table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
-```
-
-
-### AsciiTable.alignLeft(value, length, [padding])
-
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-```js
-table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
-```
-
-
-### AsciiTable.alignCenter(value, length, [padding])
-
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-```js
-table.align(AsciiTable.CENTER, 'hey', 7) // '  hey  '
-```
-
-
-### AsciiTable.alignRight(value, length, [padding])
-
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-```js
-table.align(AsciiTable.LEFT, 'hey', 7) // '    hey'
-```
-
-
-### AsciiTable.alignAuto(value, length, [padding])
-
-Attempt to do intelligent alignment of provided `value`, `String` input will 
-be left aligned, `Number` types will be right aligned.
-
-* `string` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-```js
-table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
-```
-
-
-### AsciiTable.arrayFill(length, value)
-
-Create a new array at the given length, filled with the given value, mainly used internally
-
-* `length` - length of array
-* `value` - fill value (optional)
-
-```js
-AsciiTable.arrayFill(4, 0) // [0, 0, 0, 0]
-```
-
-
-### instance.setBorder()
-
-* `enabled` - 
+Example:
 
 ```js
 ```
 
 
-### instance.removeBorder()
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setAlign(rowIndex, direction)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setAlignLeft(rowIndex)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setAlignCenter(rowIndex)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setAlignRight(rowIndex)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setTitle(title)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setTitleAlign(direction)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setTitleAlignLeft()
+#### instance.setTitleAlignLeft()
 
 Alias to `instance.setTitleAlign(AsciiTable.LEFT)`
 
 
-### instance.setTitleAlignCenter()
+#### instance.setTitleAlignCenter()
 
 Alias to `instance.setTitleAlign(AsciiTable.CENTER)`
 
 
-### instance.setTitleAlignRight()
+#### instance.setTitleAlignRight()
 
 Alias to `instance.setTitleAlign(AsciiTable.RIGHT)`
 
 
-### instance.sort(iterator)
+#### instance.sort(iterator)
 
-* `enabled` - 
+* `iterator` - sorting method to run against the rows
+
+Example:
+
+```js
+table.sort(function(a, b) {
+  return a[2] - b[2]
+})
+console.log(table.toString())
+```
+
+```
+.----------------.
+| 2 | John |  34 |
+| 1 | Bob  |  52 |
+| 3 | Jim  |  83 |
+'----------------'
+```
+
+
+#### instance.sortColumn(index, iterator)
+
+Sorting shortcut for targeting a specific column
+
+* `index` - column idx to sort
+* `iterator` - sorting method to run against column values
+
+Example:
+
+```js
+// This is quivalent to the `sort` example above
+table.sortColumn(2, function(a, b) {
+  return a - b
+})
+```
+
+
+#### instance.setHeading([heading])
+
+Set the column headings for the table, takes arguments the same way as `addRow`
+
+* `heading` - heading array or arguments
+
+Example:
+
+```js
+table.setHeading('ID', 'Key', 'Value')
+
+// or:
+
+table.setHeading(['ID', 'Key', 'Value'])
+```
+
+
+#### instance.setHeadingAlign(direction)
+
+* `direction` - 
+
+Example:
 
 ```js
 ```
 
 
-### instance.sortColumn(index, iterator)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setHeading([arguments])
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setHeadingAlign(direction)
-
-* `enabled` - 
-
-```js
-```
-
-
-### instance.setHeadingAlignLeft()
+#### instance.setHeadingAlignLeft()
 
 Alias to `instance.setHeadingAlignLeft(AsciiTable.LEFT)`
 
 
-### instance.setHeadingAlignCenter()
+#### instance.setHeadingAlignCenter()
 
 Alias to `instance.setHeadingAlignLeft(AsciiTable.CENTER)`
 
 
-### instance.setHeadingAlignRight()
+#### instance.setHeadingAlignRight()
 
 Alias to `instance.setHeadingAlignLeft(AsciiTable.RIGHT)`
 
 
-### instance.addRow([arguments])
+#### instance.addRow([arguments])
 
-* `enabled` - 
+Rows can be added using a single array argument, or the arguments if multiple 
+args are used when calling the method.
+
+* `row` - array or arguments of column values
+
+Example:
 
 ```js
+var table = new AsciiTable()
+
+table
+  .addRow(1, 'Bob', 52)
+  .addRow([2, 'John', 34])
+
+console.log(table.render())
+```
+
+```
+.---------------.
+| 1 | Bob  | 52 |
+| 2 | John | 34 |
+'---------------'
 ```
 
 
-### instance.addRowMatrix(rows)
+#### instance.addRowMatrix(rows)
 
-* `enabled` - 
+Bulk `addRow` operation
+
+* `rows` - multidimentional array of rows
+
+Example:
 
 ```js
+table.addRowMatrix([
+  [2, 'John', 34]
+, [3, 'Jim', 83]
+])
+
 ```
 
 
-### instance.setJustify(enabled)
+#### instance.setJustify(enabled)
 
-* `enabled` - 
+Justify all columns to be the same width
+
+* `enabled` - boolean for turning justify on or off, `undefined` considered true
+
+Example:
 
 ```js
+table
+  .addRow('1', 'two', 'three')
+  .setJustify()
+
+console.log(table.toString())
+```
+
+```
+.-----------------------.
+| 1     | two   | three |
+'-----------------------'
 ```
 
 
-### instance.toString()
+#### instance.toString()
+
+Render the instance as a string for output
 
 **Alias**: [`valueOf`, `render`]
 
+
+#### instance.toJSON()
+
+Return the JSON representation of the table, this also allows us to call 
+`JSON.stringify` on the instance.
+
+Example:
+
 ```js
+var table = new AsciiTable('Title')
+
+table
+  .setHeading('id', 'name')
+  .addRow(1, 'Bob')
+  .addRow(2, 'Steve')
+
+console.log(table.toJSON())
+console.log(JSON.stringify(table))
 ```
 
-### instance.toJSON()
-
-* `enabled` - 
-
 ```js
+{
+  title: 'Title'
+, heading: [ 'id', 'name' ]
+, rows: [ 
+    [ 1, 'Bob' ]
+  , [ 2, 'Steve' ] 
+  ] 
+}
 ```
 
+```
+{"title":"Title","heading":["id","name"],"rows":[[1,"Bob"],[2,"Steve"]]}
+```
+
+
+#### instance.fromJSON(json)
+
+Populate the table from json, should match the `toJSON` output above.
+
+Example:
+
+```js
+var table = new AsciiTable().fromJSON({
+  title: 'Title'
+, heading: [ 'id', 'name' ]
+, rows: [ 
+    [ 1, 'Bob' ]
+  , [ 2, 'Steve' ] 
+  ] 
+})
+```
 
 
 
