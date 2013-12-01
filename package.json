@@ -1,6 +1,6 @@
 {
   "name": "ascii-table"
-, "version": "0.0.2"
+, "version": "0.0.3"
 , "license": "MIT"
 , "author": "Beau Sorensen <mail@beausorensen.com> (http://github.com/sorensen)"
 , "description": "Easy tables for your console data"
@@ -18,7 +18,5 @@
 , "devDependencies": {
     "mocha": "~1.8.1"
   }
-, "dependencies": {
-    "colors": "~0.6.2"
-  }
+, "dependencies": {}
 }

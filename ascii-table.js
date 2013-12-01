@@ -2,7 +2,7 @@
  * (c) 2013 Beau Sorensen
  * MIT Licensed
  * For all details and documentation:
- * https://github.com/sorensen/console-table
+ * https://github.com/sorensen/ascii-table
  */
 
 ;(function() {
@@ -14,7 +14,6 @@
 
 var slice = Array.prototype.slice
   , toString = Object.prototype.toString
-  , colors = typeof require !== 'undefined' ? require('colors') : null
 
 /**
  * Table constructor
@@ -39,7 +38,7 @@ function Table(name) {
  * Current library version, should match `package.json`
  */
 
-Table.VERSION = '0.0.2'
+Table.VERSION = '0.0.3'
 
 /*!
  * Alignment constants
@@ -50,74 +49,25 @@ Table.CENTER = 1
 Table.RIGHT = 2
 
 /**
+ * Create a new table instance
  *
- *
+ * @param {String} name
  * @api public
  */
 
-Table.prototype.setBorder = function() {
-  this.__border = true
-  this.__edge = '|'
-  this.__fill = '-'
+Table.factory = function(name) {
+  return new Table(name)
 }
 
 /**
+ * Align the a string at the given length
  *
- *
+ * @param {Number} direction
+ * @param {String} string input
+ * @param {Number} string length
+ * @param {Number} padding character
  * @api public
  */
-
-Table.prototype.removeBorder = function() {
-  this.__border = false
-  this.__edge = ' '
-  this.__fill = ' '
-}
-
-/**
- * Set the column alignment at a given index
- *
- * @param {Number} column index
- * @param {Number} alignment direction
- * @api public
- */
-
-Table.prototype.setAlign = function(idx, dir) {
-  this.__aligns[idx] = dir
-  return this
-}
-
-/**
- * Set left alignment at given index
- *
- * @param {Number} column index
- * @api public
- */
-
-Table.prototype.setAlignLeft = function(idx) {
-  return this.setAlign(idx, Table.LEFT)
-}
-
-/**
- * Set center alignment at given index
- *
- * @param {Number} column index
- * @api public
- */
-
-Table.prototype.setAlignCenter = function(idx) {
-  return this.setAlign(idx, Table.CENTER)
-}
-
-/**
- * Set right alignment at given index
- *
- * @param {Number} column index
- * @api public
- */
-
-Table.prototype.setAlignRight = function(idx) {
-  return this.setAlign(idx, Table.RIGHT)
-}
 
 Table.align = function(dir, str, len, pad) {
   if (dir === Table.LEFT) return Table.alignLeft(str, len, pad)
@@ -152,7 +102,7 @@ Table.alignLeft = function(str, len, pad) {
  * @api public
  */
 
-Table.alignCenter = function(str, len, pad, color) {
+Table.alignCenter = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
@@ -162,7 +112,6 @@ Table.alignCenter = function(str, len, pad, color) {
     , odds = Math.abs((nLen % 2) - (len % 2))
     , len = str.length
 
-  color && colors && (str = str[color])
   return Table.alignRight('', half, pad) 
     + str
     + Table.alignLeft('', half + odds, pad)
@@ -229,6 +178,54 @@ Table.arrayFill = function(len, fill) {
 }
 
 /**
+ * Set the table border
+ *
+ * @param {String} horizontal edges (optional, default `|`)
+ * @param {String} vertical edges (optional, default `-`)
+ * @param {String} top corners (optional, default `.`)
+ * @param {String} bottom corners (optional, default `'`)
+ * @api public
+ */
+
+Table.prototype.setBorder = function(edge, fill, top, bottom) {
+  this.__border = true
+  if (arguments.length === 1) {
+    fill = top = bottom = edge
+  }
+  this.__edge = edge || '|'
+  this.__fill = fill || '-'
+  this.__top = top || '.'
+  this.__bottom = bottom || "'"
+  return this
+}
+
+/**
+ * Remove all table borders
+ *
+ * @api public
+ */
+
+Table.prototype.removeBorder = function() {
+  this.__border = false
+  this.__edge = ' '
+  this.__fill = ' '
+  return this
+}
+
+/**
+ * Set the column alignment at a given index
+ *
+ * @param {Number} column index
+ * @param {Number} alignment direction
+ * @api public
+ */
+
+Table.prototype.setAlign = function(idx, dir) {
+  this.__aligns[idx] = dir
+  return this
+}
+
+/**
  * Set the title of the table
  *
  * @param {String} title
@@ -240,13 +237,28 @@ Table.prototype.setTitle = function(name) {
   return this
 }
 
+/**
+ * Get the title of the table
+ *
+ * @return {String} title
+ * @api public
+ */
+
+Table.prototype.getTitle = function() {
+  return this.__name
+}
+
+/**
+ * Set table title alignment
+ *
+ * @param {Number} direction
+ * @api public
+ */
+
 Table.prototype.setTitleAlign = function(dir) {
   this.__nameAlign = dir
   return this
 }
-Table.prototype.setTitleAlignLeft = function() { return this.setTitleAlign(Table.LEFT) }
-Table.prototype.setTitleAlignRight = function() { return this.setTitleAlign(Table.RIGHT) }
-Table.prototype.setTitleAlignCenter = function() { return this.setTitleAlign(Table.CENTER) }
 
 /**
  * Table sorting shortcut to sort rows
@@ -281,29 +293,77 @@ Table.prototype.sortColumn = function(idx, method) {
  * @api public
  */
 
-Table.prototype.setHeading = function() {
-  this.__heading = slice.call(arguments)
+Table.prototype.setHeading = function(row) {
+  if (arguments.length > 1 || toString.call(row) !== '[object Array]') {
+    row = slice.call(arguments)
+  }
+  this.__heading = row
   return this
 }
+
+/**
+ * Get table heading for columns
+ *
+ * @return {Array} copy of headings
+ * @api public
+ */
+
+Table.prototype.getHeading = function() {
+  return this.__heading.slice()
+}
+
+/**
+ * Set heading alignment
+ *
+ * @param {Number} direction
+ * @api public
+ */
+
 Table.prototype.setHeadingAlign = function(dir) {
   this.__headingAlign = dir
   return this
 }
-Table.prototype.setHeadingAlignLeft = function() { return this.setHeadingAlign(Table.LEFT) }
-Table.prototype.setHeadingAlignRight = function() { return this.setHeadingAlign(Table.RIGHT) }
-Table.prototype.setHeadingAlignCenter = function() { return this.setHeadingAlign(Table.CENTER) }
-
 
 /**
  * Add a row of information to the table
  * 
- * @param {...} argument values in order of columns
+ * @param {...|Array} argument values in order of columns
+ * @api public
  */
 
-Table.prototype.addRow = function() {
-  var row = slice.call(arguments)
+Table.prototype.addRow = function(row) {
+  if (arguments.length > 1 || toString.call(row) !== '[object Array]') {
+    row = slice.call(arguments)
+  }
   this.__maxCells = Math.max(this.__maxCells, row.length)
   this.__rows.push(row)
+  return this
+}
+
+/**
+ * Get a copy of all rows of the table
+ *
+ * @return {Array} copy of rows
+ * @api public
+ */
+
+Table.prototype.getRows = function() {
+  return this.__rows.slice().map(function(row) {
+    return row.slice()
+  })
+}
+
+/**
+ * Add rows in the format of a row matrix
+ *
+ * @param {Array} row matrix
+ * @api public
+ */
+
+Table.prototype.addRowMatrix = function(rows) {
+  for (var i = 0; i < rows.length; i++) {
+    this.addRow(rows[i])
+  }
   return this
 }
 
@@ -321,8 +381,23 @@ Table.prototype.setJustify = function(val) {
 }
 
 /**
+ * Convert the current instance to a JSON structure
+ *
+ * @return {Object} json representation
+ */
+
+Table.prototype.toJSON = function() {
+  return {
+    title: this.getTitle()
+  , heading: this.getHeading()
+  , rows: this.getRows()
+  }
+}
+
+/**
  * Render the table with the current information
  *
+ * @return {String} formatted table
  * @api public
  */
 
@@ -360,19 +435,19 @@ Table.prototype.toString = function() {
   total -= this.__spacing
 
   // Heading
-  border && body.push(this._seperator(total, '.'))
+  border && body.push(this._seperator(total, this.__top))
   if (this.__name) {
     body.push(this._renderTitle(total))
     border && body.push(this._seperator(total))
   }
   if (this.__heading) {
-    body.push(this._renderRow(this.__heading, ' ', this.__headingAlign, 'cyan'))
+    body.push(this._renderRow(this.__heading, ' ', this.__headingAlign))
     body.push(this._rowSeperator(mLen, this.__fill))
   }
   for (var i = 0; i < this.__rows.length; i++) {
     body.push(this._renderRow(this.__rows[i], ' '))
   }
-  border && body.push(this._seperator(total, "'"))
+  border && body.push(this._seperator(total, this.__bottom))
   return body.join('\n')
 }
 
@@ -392,18 +467,20 @@ Table.prototype._seperator = function(len, sep) {
 /**
  * Create a row seperator
  *
+ * @return {String} seperator
  * @api private
  */
 
 Table.prototype._rowSeperator = function() {
-  var blanks = Table.arrayFill(this.__maxCells, '-')
-  return this._renderRow(blanks, '-')
+  var blanks = Table.arrayFill(this.__maxCells, this.__fill)
+  return this._renderRow(blanks, this.__fill)
 }
 
 /**
  * Render the table title in a centered box
  *
  * @param {Number} string size
+ * @return {String} formatted title
  * @api private
  */
 
@@ -419,10 +496,11 @@ Table.prototype._renderTitle = function(len) {
  * @param {Array} row
  * @param {String} column seperator
  * @param {Number} total row alignment (optional, default `auto`)
+ * @return {String} formatted row
  * @api private
  */
 
-Table.prototype._renderRow = function(row, str, align, color) {
+Table.prototype._renderRow = function(row, str, align) {
   var tmp = ['']
     , max = this.__colMaxes
 
@@ -440,12 +518,29 @@ Table.prototype._renderRow = function(row, str, align, color) {
     if (use === Table.CENTER) method = 'alignCenter'
     if (use === Table.RIGHT) method = 'alignRight'
 
-    tmp.push(Table[method](cell, pad, str, color))
+    tmp.push(Table[method](cell, pad, str))
   }
   var front = tmp.join(str + this.__edge + str)
   front = front.substr(1, front.length)
   return front + str + this.__edge
 }
+
+/*!
+ * Aliases
+ */
+
+// Create method shortcuts to all alignment methods for each direction
+;['Left', 'Right', 'Center'].forEach(function(dir) {
+  var constant = Table[dir.toUpperCase()]
+
+  ;['setAlign', 'setTitleAlign', 'setHeadingAlign'].forEach(function(method) {
+    // Call the base method with the direction constant as the last argument
+    Table.prototype[method + dir] = function() {
+      var args = slice.call(arguments).concat(constant)
+      return this[method].apply(this, args)
+    }
+  })
+})
 
 /*!
  * Module exports.
