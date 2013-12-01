@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 test:
-	@mocha -R spec
+	@mocha -R spec test.js
 
 hint:
 	@jshint ascii-table.js test.js package.json

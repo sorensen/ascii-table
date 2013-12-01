@@ -2,6 +2,8 @@ Ascii Table
 ===========
 
 [![Build Status](https://secure.travis-ci.org/sorensen/ascii-table.png)](http://travis-ci.org/sorensen/ascii-table) 
+[![devDependency Status](https://david-dm.org/sorensen/ascii-table.png)](https://david-dm.org/sorensen/ascii-table#info=dependencies)
+[![NPM version](https://badge.fury.io/js/ascii-table.png)](http://badge.fury.io/js/ascii-table)
 
 Easy table output for node debugging, but you could probably do more with it, 
 since its just a string.
