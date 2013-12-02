@@ -16,14 +16,14 @@ var slice = Array.prototype.slice
   , toString = Object.prototype.toString
 
 /**
- * Table constructor
+ * AsciiTable constructor
  *
  * @param {String|Object} title or JSON table
  * @constructor
  * @api public
  */
 
-function Table(name) {
+function AsciiTable(name) {
   this.reset(name)
 }
 
@@ -31,15 +31,15 @@ function Table(name) {
  * Current library version, should match `package.json`
  */
 
-Table.VERSION = '0.0.3'
+AsciiTable.VERSION = '0.0.4'
 
 /*!
  * Alignment constants
  */
 
-Table.LEFT = 0
-Table.CENTER = 1
-Table.RIGHT = 2
+AsciiTable.LEFT = 0
+AsciiTable.CENTER = 1
+AsciiTable.RIGHT = 2
 
 /*!
  * Static methods
@@ -52,8 +52,8 @@ Table.RIGHT = 2
  * @api public
  */
 
-Table.factory = function(name) {
-  return new Table(name)
+AsciiTable.factory = function(name) {
+  return new AsciiTable(name)
 }
 
 /**
@@ -66,11 +66,11 @@ Table.factory = function(name) {
  * @api public
  */
 
-Table.align = function(dir, str, len, pad) {
-  if (dir === Table.LEFT) return Table.alignLeft(str, len, pad)
-  if (dir === Table.RIGHT) return Table.alignRight(str, len, pad)
-  if (dir === Table.CENTER) return Table.alignCenter(str, len, pad)
-  return Table.alignAuto(str, len, pad)
+AsciiTable.align = function(dir, str, len, pad) {
+  if (dir === AsciiTable.LEFT) return AsciiTable.alignLeft(str, len, pad)
+  if (dir === AsciiTable.RIGHT) return AsciiTable.alignRight(str, len, pad)
+  if (dir === AsciiTable.CENTER) return AsciiTable.alignCenter(str, len, pad)
+  return AsciiTable.alignAuto(str, len, pad)
 }
 
 /**
@@ -82,7 +82,7 @@ Table.align = function(dir, str, len, pad) {
  * @api public
  */
 
-Table.alignLeft = function(str, len, pad) {
+AsciiTable.alignLeft = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
@@ -99,7 +99,7 @@ Table.alignLeft = function(str, len, pad) {
  * @api public
  */
 
-Table.alignCenter = function(str, len, pad) {
+AsciiTable.alignCenter = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
@@ -109,9 +109,9 @@ Table.alignCenter = function(str, len, pad) {
     , odds = Math.abs((nLen % 2) - (len % 2))
     , len = str.length
 
-  return Table.alignRight('', half, pad) 
+  return AsciiTable.alignRight('', half, pad) 
     + str
-    + Table.alignLeft('', half + odds, pad)
+    + AsciiTable.alignLeft('', half + odds, pad)
 }
 
 /**
@@ -123,7 +123,7 @@ Table.alignCenter = function(str, len, pad) {
  * @api public
  */
 
-Table.alignRight = function(str, len, pad) {
+AsciiTable.alignRight = function(str, len, pad) {
   if (!len || len < 0) return ''
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
@@ -140,7 +140,7 @@ Table.alignRight = function(str, len, pad) {
  * @api public
  */
 
-Table.alignAuto = function(str, len, pad) {
+AsciiTable.alignAuto = function(str, len, pad) {
   if (typeof str === 'undefined') str = ''
   var type = toString.call(str)
   pad || (pad = ' ')
@@ -150,8 +150,8 @@ Table.alignAuto = function(str, len, pad) {
   }
   if (str.length < len) {
     switch(type) {
-      case '[object Number]': return Table.alignRight(str, len, pad)
-      default: return Table.alignLeft(str, len, pad)
+      case '[object Number]': return AsciiTable.alignRight(str, len, pad)
+      default: return AsciiTable.alignLeft(str, len, pad)
     }
   }
   return str
@@ -166,7 +166,7 @@ Table.alignAuto = function(str, len, pad) {
  * @api public
  */
 
-Table.arrayFill = function(len, fill) {
+AsciiTable.arrayFill = function(len, fill) {
   var arr = new Array(len)
   for (var i = 0; i !== len; i++) {
     arr[i] = fill;
@@ -185,17 +185,17 @@ Table.arrayFill = function(len, fill) {
  * @api public
  */
 
-Table.prototype.reset = 
-Table.prototype.clear = function(name) {
+AsciiTable.prototype.reset = 
+AsciiTable.prototype.clear = function(name) {
   this.__name = ''
-  this.__nameAlign = Table.CENTER
+  this.__nameAlign = AsciiTable.CENTER
   this.__rows = []
   this.__maxCells = 0
   this.__aligns = []
   this.__colMaxes = []
   this.__spacing = 1
   this.__heading = null
-  this.__headingAlign = Table.CENTER
+  this.__headingAlign = AsciiTable.CENTER
   this.setBorder()
 
   if (toString.call(name) === '[object String]') {
@@ -215,7 +215,7 @@ Table.prototype.clear = function(name) {
  * @api public
  */
 
-Table.prototype.setBorder = function(edge, fill, top, bottom) {
+AsciiTable.prototype.setBorder = function(edge, fill, top, bottom) {
   this.__border = true
   if (arguments.length === 1) {
     fill = top = bottom = edge
@@ -233,7 +233,7 @@ Table.prototype.setBorder = function(edge, fill, top, bottom) {
  * @api public
  */
 
-Table.prototype.removeBorder = function() {
+AsciiTable.prototype.removeBorder = function() {
   this.__border = false
   this.__edge = ' '
   this.__fill = ' '
@@ -248,7 +248,7 @@ Table.prototype.removeBorder = function() {
  * @api public
  */
 
-Table.prototype.setAlign = function(idx, dir) {
+AsciiTable.prototype.setAlign = function(idx, dir) {
   this.__aligns[idx] = dir
   return this
 }
@@ -260,7 +260,7 @@ Table.prototype.setAlign = function(idx, dir) {
  * @api public
  */
 
-Table.prototype.setTitle = function(name) {
+AsciiTable.prototype.setTitle = function(name) {
   this.__name = name
   return this
 }
@@ -272,7 +272,7 @@ Table.prototype.setTitle = function(name) {
  * @api public
  */
 
-Table.prototype.getTitle = function() {
+AsciiTable.prototype.getTitle = function() {
   return this.__name
 }
 
@@ -283,19 +283,19 @@ Table.prototype.getTitle = function() {
  * @api public
  */
 
-Table.prototype.setTitleAlign = function(dir) {
+AsciiTable.prototype.setTitleAlign = function(dir) {
   this.__nameAlign = dir
   return this
 }
 
 /**
- * Table sorting shortcut to sort rows
+ * AsciiTable sorting shortcut to sort rows
  *
  * @param {Function} sorting method
  * @api public
  */
 
-Table.prototype.sort = function(method) {
+AsciiTable.prototype.sort = function(method) {
   this.__rows.sort(method)
   return this
 }
@@ -308,7 +308,7 @@ Table.prototype.sort = function(method) {
  * @api public
  */
 
-Table.prototype.sortColumn = function(idx, method) {
+AsciiTable.prototype.sortColumn = function(idx, method) {
   this.__rows.sort(function(a, b) {
     return method(a[idx], b[idx])
   })
@@ -321,7 +321,7 @@ Table.prototype.sortColumn = function(idx, method) {
  * @api public
  */
 
-Table.prototype.setHeading = function(row) {
+AsciiTable.prototype.setHeading = function(row) {
   if (arguments.length > 1 || toString.call(row) !== '[object Array]') {
     row = slice.call(arguments)
   }
@@ -336,7 +336,7 @@ Table.prototype.setHeading = function(row) {
  * @api public
  */
 
-Table.prototype.getHeading = function() {
+AsciiTable.prototype.getHeading = function() {
   return this.__heading.slice()
 }
 
@@ -347,7 +347,7 @@ Table.prototype.getHeading = function() {
  * @api public
  */
 
-Table.prototype.setHeadingAlign = function(dir) {
+AsciiTable.prototype.setHeadingAlign = function(dir) {
   this.__headingAlign = dir
   return this
 }
@@ -359,7 +359,7 @@ Table.prototype.setHeadingAlign = function(dir) {
  * @api public
  */
 
-Table.prototype.addRow = function(row) {
+AsciiTable.prototype.addRow = function(row) {
   if (arguments.length > 1 || toString.call(row) !== '[object Array]') {
     row = slice.call(arguments)
   }
@@ -375,7 +375,7 @@ Table.prototype.addRow = function(row) {
  * @api public
  */
 
-Table.prototype.getRows = function() {
+AsciiTable.prototype.getRows = function() {
   return this.__rows.slice().map(function(row) {
     return row.slice()
   })
@@ -388,7 +388,7 @@ Table.prototype.getRows = function() {
  * @api public
  */
 
-Table.prototype.addRowMatrix = function(rows) {
+AsciiTable.prototype.addRowMatrix = function(rows) {
   for (var i = 0; i < rows.length; i++) {
     this.addRow(rows[i])
   }
@@ -401,7 +401,7 @@ Table.prototype.addRowMatrix = function(rows) {
  * @api public
  */
 
-Table.prototype.clearRows = function() {
+AsciiTable.prototype.clearRows = function() {
   this.__rows = []
   this.__maxCells = 0
   this.__colMaxes = []
@@ -415,7 +415,7 @@ Table.prototype.clearRows = function() {
  * @api public
  */
 
-Table.prototype.setJustify = function(val) {
+AsciiTable.prototype.setJustify = function(val) {
   arguments.length === 0 && (val = true)
   this.__justify = !!val
   return this
@@ -428,7 +428,7 @@ Table.prototype.setJustify = function(val) {
  * @api public
  */
 
-Table.prototype.toJSON = function() {
+AsciiTable.prototype.toJSON = function() {
   return {
     title: this.getTitle()
   , heading: this.getHeading()
@@ -443,8 +443,8 @@ Table.prototype.toJSON = function() {
  * @api public
  */
 
-Table.prototype.parse = 
-Table.prototype.fromJSON = function(obj) {
+AsciiTable.prototype.parse = 
+AsciiTable.prototype.fromJSON = function(obj) {
   return this
     .clear()
     .setTitle(obj.title)
@@ -459,13 +459,13 @@ Table.prototype.fromJSON = function(obj) {
  * @api public
  */
 
-Table.prototype.render =
-Table.prototype.valueOf =
-Table.prototype.toString = function() {
+AsciiTable.prototype.render =
+AsciiTable.prototype.valueOf =
+AsciiTable.prototype.toString = function() {
   var self = this
     , body = []
     , mLen = this.__maxCells
-    , max = Table.arrayFill(mLen, 0)
+    , max = AsciiTable.arrayFill(mLen, 0)
     , total = mLen * 3
     , rows = this.__rows
     , justify
@@ -517,9 +517,9 @@ Table.prototype.toString = function() {
  * @api private
  */
 
-Table.prototype._seperator = function(len, sep) {
+AsciiTable.prototype._seperator = function(len, sep) {
   sep || (sep = this.__edge)
-  return sep + Table.alignRight(sep, len, this.__fill)
+  return sep + AsciiTable.alignRight(sep, len, this.__fill)
 }
 
 /**
@@ -529,8 +529,8 @@ Table.prototype._seperator = function(len, sep) {
  * @api private
  */
 
-Table.prototype._rowSeperator = function() {
-  var blanks = Table.arrayFill(this.__maxCells, this.__fill)
+AsciiTable.prototype._rowSeperator = function() {
+  var blanks = AsciiTable.arrayFill(this.__maxCells, this.__fill)
   return this._renderRow(blanks, this.__fill)
 }
 
@@ -542,9 +542,9 @@ Table.prototype._rowSeperator = function() {
  * @api private
  */
 
-Table.prototype._renderTitle = function(len) {
+AsciiTable.prototype._renderTitle = function(len) {
   var name = ' ' + this.__name + ' '
-    , str = Table.align(this.__nameAlign, name, len - 1, ' ')
+    , str = AsciiTable.align(this.__nameAlign, name, len - 1, ' ')
   return this.__edge + str + this.__edge
 }
 
@@ -558,7 +558,7 @@ Table.prototype._renderTitle = function(len) {
  * @api private
  */
 
-Table.prototype._renderRow = function(row, str, align) {
+AsciiTable.prototype._renderRow = function(row, str, align) {
   var tmp = ['']
     , max = this.__colMaxes
 
@@ -573,11 +573,11 @@ Table.prototype._renderRow = function(row, str, align) {
   
     if (typeof align === 'undefined') use = cAlign
 
-    if (use === Table.LEFT) method = 'alignLeft'
-    if (use === Table.CENTER) method = 'alignCenter'
-    if (use === Table.RIGHT) method = 'alignRight'
+    if (use === AsciiTable.LEFT) method = 'alignLeft'
+    if (use === AsciiTable.CENTER) method = 'alignCenter'
+    if (use === AsciiTable.RIGHT) method = 'alignRight'
 
-    tmp.push(Table[method](cell, pad, str))
+    tmp.push(AsciiTable[method](cell, pad, str))
   }
   var front = tmp.join(str + this.__edge + str)
   front = front.substr(1, front.length)
@@ -590,11 +590,11 @@ Table.prototype._renderRow = function(row, str, align) {
 
 // Create method shortcuts to all alignment methods for each direction
 ;['Left', 'Right', 'Center'].forEach(function(dir) {
-  var constant = Table[dir.toUpperCase()]
+  var constant = AsciiTable[dir.toUpperCase()]
 
   ;['setAlign', 'setTitleAlign', 'setHeadingAlign'].forEach(function(method) {
     // Call the base method with the direction constant as the last argument
-    Table.prototype[method + dir] = function() {
+    AsciiTable.prototype[method + dir] = function() {
       var args = slice.call(arguments).concat(constant)
       return this[method].apply(this, args)
     }
@@ -606,9 +606,9 @@ Table.prototype._renderRow = function(row, str, align) {
  */
 
 if (typeof exports !== 'undefined') {
-  module.exports = Table
+  module.exports = AsciiTable
 } else {
-  this.AsciiTable = Table
+  this.AsciiTable = AsciiTable
 }
 
 }).call(this);
