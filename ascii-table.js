@@ -443,6 +443,7 @@ Table.prototype.toJSON = function() {
  * @api public
  */
 
+Table.prototype.parse = 
 Table.prototype.fromJSON = function(obj) {
   return this
     .clear()

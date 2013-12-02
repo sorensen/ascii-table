@@ -8,6 +8,49 @@ Ascii Table
 Easy table output for node debugging, but you could probably do more with it, 
 since its just a string.
 
+Table of Contents
+-----------------
+
+* [Usage](#usage)
+* [Example](#usage)
+* [API](#api)
+  - [Static Methods](#static-methods)
+    * [factory([title])](#asciitablefactorytitle)
+    * [align(direction, val, len, [pad])](#asciitablealigndirection-val-len-pad)
+    * [alignLeft(val, len, [pad])](#asciitablealignleftval-len-pad)
+    * [alignCenter(val, len, [pad])](#asciitablealigncenterval-len-pad)
+    * [alignRight(val, len, [pad])](#asciitablealignrightval-len-pad)
+    * [alignAuto(val, len, [pad])](#asciitablealignautoval-len-pad)
+    * [arrayFill(len, [val])](#asciitablearrayfilllen-val)
+    
+  - [Instance Methods](#instance-methods)
+    * [setBorder([edge], [fill], [top], [bottom])](#instancesetborderedge-fill-top-bottom)
+    * [removeBorder()](#instanceremoveborder)
+    * [setAlign(idx, direction)](#instancesetalignidx-direction)
+    * [setAlignLeft(idx)](#instancesetalignleftidx)
+    * [setAlignCenter(idx)](#instancesetaligncenteridx)
+    * [setAlignRight(idx)](#instancesetalignrightidx)
+    * [setTitle(title)](#instancesettitletitle)
+    * [getTitle()](#instancegettitle)
+    * [setTitleAlign(direction)](#instancesettitlealigndirection)
+    * [setTitleAlignLeft()](#instancesettitlealignleft)
+    * [setTitleAlignCenter()](#instancesettitlealigncenter)
+    * [setTitleAlignRight()](#instancesettitlealignright)
+    * [sort([iterator])](#instancesortiterator)
+    * [sortColumn(idx, [iterator])](#instancesortcolumnidx-iterator)
+    * [setHeading(heading, [...])](#instancesetheadingheading)
+    * [setHeadingAlign(direction)](#instancesetheadingaligndirection)
+    * [setHeadingAlignLeft()](#instancesetheadingalignleft)
+    * [setHeadingAlignCenter()](#instancesetheadingaligncenter)
+    * [setHeadingAlignRight()](#instancesetheadingalignright)
+    * [addRow(row, [...])](#instanceaddrowrow)
+    * [addRowMatrix(rows)](#instanceaddrowmatrixrows)
+    * [setJustify([enabled])](#instancesetjustifyenabled)
+    * [toString()](#instancetostring)
+    * [toJSON()](#instancetojson)
+    * [fromJSON(obj)](#instancefromjsonobj)
+    * [clear()](#instanceclear)
+    * [clearRows()](#instanceclearrows)
 
 Usage
 -----
@@ -80,8 +123,10 @@ console.log(table.toString())
 ```
 
 
-Methods
--------
+API
+---
+
+### Static Methods
 
 #### AsciiTable
 
@@ -112,14 +157,14 @@ var table = AsciiTable.factory({
 ```
 
 
-#### AsciiTable.align(direction, value, length, [padding])
+#### AsciiTable.align(direction, val, len, [pad])
 
 Shortcut to one of the three following methods
 
 * `direction` - alignment direction (`AsciiTable.LEFT`, `AsciiTable.CENTER`, `AsciiTable.RIGHT`)
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
+* `val` - string to align
+* `len` - total length of created string
+* `pad` - padding / fill char (optional, default `' '`)
 
 Example:
 
@@ -128,53 +173,53 @@ table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
 ```
 
 
-#### AsciiTable.alignLeft(value, length, [padding])
+#### AsciiTable.alignLeft(val, len, [pad])
 
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
-
-Example:
-
-```js
-table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
-```
-
-
-#### AsciiTable.alignCenter(value, length, [padding])
-
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
+* `val` - string to align
+* `len` - total length of created string
+* `pad` - padding / fill char (optional, default `' '`)
 
 Example:
 
 ```js
-table.align(AsciiTable.CENTER, 'hey', 7) // '  hey  '
+table.alignLeft('hey', 7, '-') // 'hey----'
 ```
 
 
-#### AsciiTable.alignRight(value, length, [padding])
+#### AsciiTable.alignCenter(val, len, [pad])
 
-* `value` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
+* `val` - string to align
+* `len` - total length of created string
+* `pad` - padding / fill char (optional, default `' '`)
 
 Example:
 
 ```js
-table.align(AsciiTable.LEFT, 'hey', 7) // '    hey'
+table.alignCenter('hey', 7) // '  hey  '
 ```
 
 
-#### AsciiTable.alignAuto(value, length, [padding])
+#### AsciiTable.alignRight(val, len, [pad])
 
-Attempt to do intelligent alignment of provided `value`, `String` input will 
+* `val` - string to align
+* `len` - total length of created string
+* `pad` - padding / fill char (optional, default `' '`)
+
+Example:
+
+```js
+table.alignRight('hey', 7) // '    hey'
+```
+
+
+#### AsciiTable.alignAuto(val, len, [pad])
+
+Attempt to do intelligent alignment of provided `val`, `String` input will 
 be left aligned, `Number` types will be right aligned.
 
-* `string` - string to align
-* `length` - total length of created string
-* `padding` - padding / fill char (optional, default `' '`)
+* `val` - string to align
+* `len` - total length of created string
+* `pad` - padding / fill char (optional, default `' '`)
 
 Example:
 
@@ -183,12 +228,12 @@ table.align(AsciiTable.LEFT, 'hey', 7) // 'hey    '
 ```
 
 
-#### AsciiTable.arrayFill(length, value)
+#### AsciiTable.arrayFill(len, [val])
 
-Create a new array at the given length, filled with the given value, mainly used internally
+Create a new array at the given len, filled with the given value, mainly used internally
 
-* `length` - length of array
-* `value` - fill value (optional)
+* `len` - length of array
+* `val` - fill value (optional)
 
 Example:
 
@@ -196,6 +241,7 @@ Example:
 AsciiTable.arrayFill(4, 0) // [0, 0, 0, 0]
 ```
 
+### Instance Methods
 
 #### instance.setBorder([edge], [fill], [top], [bottom])
 
@@ -377,7 +423,7 @@ table.sortColumn(2, function(a, b) {
 ```
 
 
-#### instance.setHeading([heading])
+#### instance.setHeading(heading, [...])
 
 Set the column headings for the table, takes arguments the same way as `addRow`
 
@@ -419,7 +465,7 @@ Alias to `instance.setHeadingAlignLeft(AsciiTable.CENTER)`
 Alias to `instance.setHeadingAlignLeft(AsciiTable.RIGHT)`
 
 
-#### instance.addRow([arguments])
+#### instance.addRow(row, [...])
 
 Rows can be added using a single array argument, or the arguments if multiple 
 args are used when calling the method.
@@ -532,6 +578,8 @@ console.log(JSON.stringify(table))
 
 Populate the table from json, should match the `toJSON` output above.
 
+**Alias**: [`parse`]
+
 Example:
 
 ```js
@@ -544,6 +592,18 @@ var table = new AsciiTable().fromJSON({
   ] 
 })
 ```
+
+
+#### instance.clear()
+
+Clear / reset all table data
+
+**Alias**: [`reset`]
+
+
+#### instance.clearRows()
+
+Reset all row data, maintains title and headings.
 
 
 

@@ -273,5 +273,13 @@ describe('Ascii Table v' + info.version, function() {
       js.rows[0][0] = 'test'
       ase(table.getRows()[0][0], 1)
     })
+
+    it('#clear', function() {
+      
+    })
+
+    it('#clearRows', function() {
+      
+    })
   })
 })
