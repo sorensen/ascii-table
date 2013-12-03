@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Ascii Table by sorensen</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Ascii Table</h1>
+        <h2>Ascii Tables for JS</h2>
+        <a href="https://github.com/sorensen/ascii-table" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="ascii-table" class="anchor" href="#ascii-table"><span class="octicon octicon-link"></span></a>Ascii Table</h1>
+
+<p><a href="http://travis-ci.org/sorensen/ascii-table"><img src="https://secure.travis-ci.org/sorensen/ascii-table.png" alt="Build Status"></a> 
+<a href="https://david-dm.org/sorensen/ascii-table#info=dependencies"><img src="https://david-dm.org/sorensen/ascii-table.png" alt="devDependency Status"></a>
+<a href="http://badge.fury.io/js/ascii-table"><img src="https://badge.fury.io/js/ascii-table.png" alt="NPM version"></a></p>
+
+<p>Easy table output for node debugging, but you could probably do more with it, 
+since its just a string.</p>
+
+<h2>
+<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#usage">Example</a></li>
+<li>
+<p><a href="#api">API</a></p>
+
+<ul>
+<li>
+<p><a href="#static-methods">Static Methods</a></p>
+
+<ul>
+<li><a href="#asciitablefactorytitle">factory([title])</a></li>
+<li><a href="#asciitablealigndirection-val-len-pad">align(direction, val, len, [pad])</a></li>
+<li><a href="#asciitablealignleftval-len-pad">alignLeft(val, len, [pad])</a></li>
+<li><a href="#asciitablealigncenterval-len-pad">alignCenter(val, len, [pad])</a></li>
+<li><a href="#asciitablealignrightval-len-pad">alignRight(val, len, [pad])</a></li>
+<li><a href="#asciitablealignautoval-len-pad">alignAuto(val, len, [pad])</a></li>
+<li><a href="#asciitablearrayfilllen-val">arrayFill(len, [val])</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#instance-methods">Instance Methods</a></p>
+
+<ul>
+<li><a href="#instancesetborderedge-fill-top-bottom">setBorder([edge], [fill], [top], [bottom])</a></li>
+<li><a href="#instanceremoveborder">removeBorder()</a></li>
+<li><a href="#instancesetalignidx-direction">setAlign(idx, direction)</a></li>
+<li><a href="#instancesetalignleftidx">setAlignLeft(idx)</a></li>
+<li><a href="#instancesetaligncenteridx">setAlignCenter(idx)</a></li>
+<li><a href="#instancesetalignrightidx">setAlignRight(idx)</a></li>
+<li><a href="#instancesettitletitle">setTitle(title)</a></li>
+<li><a href="#instancegettitle">getTitle()</a></li>
+<li><a href="#instancesettitlealigndirection">setTitleAlign(direction)</a></li>
+<li><a href="#instancesettitlealignleft">setTitleAlignLeft()</a></li>
+<li><a href="#instancesettitlealigncenter">setTitleAlignCenter()</a></li>
+<li><a href="#instancesettitlealignright">setTitleAlignRight()</a></li>
+<li><a href="#instancesortiterator">sort([iterator])</a></li>
+<li><a href="#instancesortcolumnidx-iterator">sortColumn(idx, [iterator])</a></li>
+<li><a href="#instancesetheadingheading">setHeading(heading, [...])</a></li>
+<li><a href="#instancesetheadingaligndirection">setHeadingAlign(direction)</a></li>
+<li><a href="#instancesetheadingalignleft">setHeadingAlignLeft()</a></li>
+<li><a href="#instancesetheadingaligncenter">setHeadingAlignCenter()</a></li>
+<li><a href="#instancesetheadingalignright">setHeadingAlignRight()</a></li>
+<li><a href="#instanceaddrowrow">addRow(row, [...])</a></li>
+<li><a href="#instanceaddrowmatrixrows">addRowMatrix(rows)</a></li>
+<li><a href="#instancesetjustifyenabled">setJustify([enabled])</a></li>
+<li><a href="#instancetostring">toString()</a></li>
+<li><a href="#instancetojson">toJSON()</a></li>
+<li><a href="#instancefromjsonobj">fromJSON(obj)</a></li>
+<li><a href="#instanceclear">clear()</a></li>
+<li><a href="#instanceclearrows">clearRows()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Node.js</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">AsciiTable</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'ascii-table'</span><span class="p">)</span>
+</pre></div>
+
+<p>Browser</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"ascii-table.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p><em>Note</em>: If using in the browser, it will be placed under <code>window.AsciiTable</code></p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<p>Basic usage</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">(</span><span class="s1">'A Title'</span><span class="p">)</span>
+<span class="nx">table</span>
+  <span class="p">.</span><span class="nx">setHeading</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'Name'</span><span class="p">,</span> <span class="s1">'Age'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span><span class="p">,</span> <span class="mi">52</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'Jim'</span><span class="p">,</span> <span class="mi">83</span><span class="p">)</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.----------------.
+|    A Title     |
+|----------------|
+|   | Name | Age |
+|---|------|-----|
+| 1 | Bob  |  52 |
+| 2 | John |  34 |
+| 3 | Jim  |  83 |
+'----------------'
+</code></pre>
+
+<p>We can make a simple table without a title or headings as well.</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">()</span>
+
+<span class="nx">table</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'apple'</span><span class="p">,</span> <span class="s1">'Some longer string'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'banana'</span><span class="p">,</span> <span class="s1">'hi'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'carrot'</span><span class="p">,</span> <span class="s1">'meow'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'e'</span><span class="p">,</span> <span class="s1">'elephants'</span><span class="p">)</span>
+
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.------------------------------------.
+| a | apple     | Some longer string |
+| b | banana    | hi                 |
+| c | carrot    | meow               |
+| e | elephants |                    |
+'------------------------------------'
+</code></pre>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<h3>
+<a name="static-methods" class="anchor" href="#static-methods"><span class="octicon octicon-link"></span></a>Static Methods</h3>
+
+<h4>
+<a name="asciitable" class="anchor" href="#asciitable"><span class="octicon octicon-link"></span></a>AsciiTable</h4>
+
+<p>See: <code>AsciiTable.factory</code> for details on instantiation</p>
+
+<h4>
+<a name="asciitablefactorytitle" class="anchor" href="#asciitablefactorytitle"><span class="octicon octicon-link"></span></a>AsciiTable.factory([title])</h4>
+
+<p>Table instance creator</p>
+
+<ul>
+<li>
+<code>title</code> - table title (optional, default <code>null</code>)</li>
+</ul><p><strong><em>Note:</em></strong> If an object is passed in place of the <code>title</code>, the <code>fromJSON</code> 
+method will be used to populate the table.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">factory</span><span class="p">({</span>
+  <span class="nx">title</span><span class="o">:</span> <span class="s1">'Title'</span>
+<span class="p">,</span> <span class="nx">heading</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span> <span class="p">]</span>
+<span class="p">,</span> <span class="nx">rows</span><span class="o">:</span> <span class="p">[</span> 
+    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span> <span class="p">]</span>
+  <span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'Steve'</span> <span class="p">]</span> 
+  <span class="p">]</span> 
+<span class="p">})</span>
+</pre></div>
+
+<h4>
+<a name="asciitablealigndirection-val-len-pad" class="anchor" href="#asciitablealigndirection-val-len-pad"><span class="octicon octicon-link"></span></a>AsciiTable.align(direction, val, len, [pad])</h4>
+
+<p>Shortcut to one of the three following methods</p>
+
+<ul>
+<li>
+<code>direction</code> - alignment direction (<code>AsciiTable.LEFT</code>, <code>AsciiTable.CENTER</code>, <code>AsciiTable.RIGHT</code>)</li>
+<li>
+<code>val</code> - string to align</li>
+<li>
+<code>len</code> - total length of created string</li>
+<li>
+<code>pad</code> - padding / fill char (optional, default <code>' '</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">align</span><span class="p">(</span><span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">,</span> <span class="s1">'hey'</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1">// 'hey    '</span>
+</pre></div>
+
+<h4>
+<a name="asciitablealignleftval-len-pad" class="anchor" href="#asciitablealignleftval-len-pad"><span class="octicon octicon-link"></span></a>AsciiTable.alignLeft(val, len, [pad])</h4>
+
+<ul>
+<li>
+<code>val</code> - string to align</li>
+<li>
+<code>len</code> - total length of created string</li>
+<li>
+<code>pad</code> - padding / fill char (optional, default <code>' '</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">alignLeft</span><span class="p">(</span><span class="s1">'hey'</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">)</span> <span class="c1">// 'hey----'</span>
+</pre></div>
+
+<h4>
+<a name="asciitablealigncenterval-len-pad" class="anchor" href="#asciitablealigncenterval-len-pad"><span class="octicon octicon-link"></span></a>AsciiTable.alignCenter(val, len, [pad])</h4>
+
+<ul>
+<li>
+<code>val</code> - string to align</li>
+<li>
+<code>len</code> - total length of created string</li>
+<li>
+<code>pad</code> - padding / fill char (optional, default <code>' '</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">alignCenter</span><span class="p">(</span><span class="s1">'hey'</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1">// '  hey  '</span>
+</pre></div>
+
+<h4>
+<a name="asciitablealignrightval-len-pad" class="anchor" href="#asciitablealignrightval-len-pad"><span class="octicon octicon-link"></span></a>AsciiTable.alignRight(val, len, [pad])</h4>
+
+<ul>
+<li>
+<code>val</code> - string to align</li>
+<li>
+<code>len</code> - total length of created string</li>
+<li>
+<code>pad</code> - padding / fill char (optional, default <code>' '</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">alignRight</span><span class="p">(</span><span class="s1">'hey'</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1">// '    hey'</span>
+</pre></div>
+
+<h4>
+<a name="asciitablealignautoval-len-pad" class="anchor" href="#asciitablealignautoval-len-pad"><span class="octicon octicon-link"></span></a>AsciiTable.alignAuto(val, len, [pad])</h4>
+
+<p>Attempt to do intelligent alignment of provided <code>val</code>, <code>String</code> input will 
+be left aligned, <code>Number</code> types will be right aligned.</p>
+
+<ul>
+<li>
+<code>val</code> - string to align</li>
+<li>
+<code>len</code> - total length of created string</li>
+<li>
+<code>pad</code> - padding / fill char (optional, default <code>' '</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">align</span><span class="p">(</span><span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">,</span> <span class="s1">'hey'</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="c1">// 'hey    '</span>
+</pre></div>
+
+<h4>
+<a name="asciitablearrayfilllen-val" class="anchor" href="#asciitablearrayfilllen-val"><span class="octicon octicon-link"></span></a>AsciiTable.arrayFill(len, [val])</h4>
+
+<p>Create a new array at the given len, filled with the given value, mainly used internally</p>
+
+<ul>
+<li>
+<code>len</code> - length of array</li>
+<li>
+<code>val</code> - fill value (optional)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">arrayFill</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">// [0, 0, 0, 0]</span>
+</pre></div>
+
+<h3>
+<a name="instance-methods" class="anchor" href="#instance-methods"><span class="octicon octicon-link"></span></a>Instance Methods</h3>
+
+<h4>
+<a name="instancesetborderedge-fill-top-bottom" class="anchor" href="#instancesetborderedge-fill-top-bottom"><span class="octicon octicon-link"></span></a>instance.setBorder([edge], [fill], [top], [bottom])</h4>
+
+<p>Set the border characters for rendering, if no arguments are passed it will be 
+reset to defaults. If a single <code>edge</code> arg is passed, it will be used for all borders.</p>
+
+<ul>
+<li>
+<code>edge</code> - horizontal edges (optional, default <code>|</code>)</li>
+<li>
+<code>fill</code> - vertical edges (optional, default <code>-</code>)</li>
+<li>
+<code>top</code> - top corners (optional, default <code>.</code>)</li>
+<li>
+<code>bottom</code> - bottom corners (optional, default <code>'</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">(</span><span class="s1">'Stars'</span><span class="p">)</span>
+<span class="nx">table</span>
+  <span class="p">.</span><span class="nx">setBorder</span><span class="p">(</span><span class="s1">'*'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">setHeading</span><span class="p">(</span><span class="s1">'oh'</span><span class="p">,</span> <span class="s1">'look'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'so much'</span><span class="p">,</span> <span class="s1">'star power'</span><span class="p">)</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>************************
+*        Stars         *
+************************
+*   oh    *    look    *
+************************
+* so much * star power *
+************************
+</code></pre>
+
+<h4>
+<a name="instanceremoveborder" class="anchor" href="#instanceremoveborder"><span class="octicon octicon-link"></span></a>instance.removeBorder()</h4>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">removeBorder</span><span class="p">()</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">''</span> <span class="o">+</span> <span class="nx">table</span><span class="p">)</span>
+</pre></div>
+
+<pre><code>  #     Fruit           Thing
+ --- ----------- --------------------
+  a       apple   Some longer string
+  b      banana           hi
+  c      carrot          meow
+  e   elephants
+</code></pre>
+
+<h4>
+<a name="instancesetalignidx-direction" class="anchor" href="#instancesetalignidx-direction"><span class="octicon octicon-link"></span></a>instance.setAlign(idx, direction)</h4>
+
+<ul>
+<li>
+<code>idx</code> - column index to align</li>
+<li>
+<code>direction</code> - alignment direction, (<code>AsciiTable.LEFT</code>, <code>AsciiTable.CENTER</code>, <code>AsciiTable.RIGHT</code>)</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span>
+  <span class="p">.</span><span class="nx">setAlign</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">setAlign</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">AsciiTable</span><span class="p">.</span><span class="nx">CENTER</span><span class="p">)</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.-------------------------------------.
+| a  |   apple   | Some longer string |
+| b  |   banana  |                 hi |
+| c  |   carrot  |               meow |
+| e  | elephants |                    |
+'-------------------------------------'
+</code></pre>
+
+<h4>
+<a name="instancesetalignleftidx" class="anchor" href="#instancesetalignleftidx"><span class="octicon octicon-link"></span></a>instance.setAlignLeft(idx)</h4>
+
+<p>Alias to <code>instance.setAlign(idx, AsciiTable.LEFT)</code></p>
+
+<h4>
+<a name="instancesetaligncenteridx" class="anchor" href="#instancesetaligncenteridx"><span class="octicon octicon-link"></span></a>instance.setAlignCenter(idx)</h4>
+
+<p>Alias to <code>instance.setAlign(idx, AsciiTable.CENTER)</code></p>
+
+<h4>
+<a name="instancesetalignrightidx" class="anchor" href="#instancesetalignrightidx"><span class="octicon octicon-link"></span></a>instance.setAlignRight(idx)</h4>
+
+<p>Alias to <code>instance.setAlign(idx, AsciiTable.RIGHT)</code></p>
+
+<h4>
+<a name="instancesettitletitle" class="anchor" href="#instancesettitletitle"><span class="octicon octicon-link"></span></a>instance.setTitle(title)</h4>
+
+<ul>
+<li>
+<code>title</code> - table title</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">(</span><span class="s1">'Old Title'</span><span class="p">)</span>
+
+<span class="nx">table</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="s1">'New Title'</span><span class="p">)</span>
+</pre></div>
+
+<h4>
+<a name="instancegettitle" class="anchor" href="#instancegettitle"><span class="octicon octicon-link"></span></a>instance.getTitle()</h4>
+
+<p>Get the current title of the table</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">()</span> <span class="c1">// 'New Title'</span>
+</pre></div>
+
+<h4>
+<a name="instancesettitlealigndirection" class="anchor" href="#instancesettitlealigndirection"><span class="octicon octicon-link"></span></a>instance.setTitleAlign(direction)</h4>
+
+<ul>
+<li>
+<code>direction</code> - table alignment direction</li>
+</ul><p>Example:</p>
+
+<pre><code></code></pre>
+<h4>
+<a name="instancesettitlealignleft" class="anchor" href="#instancesettitlealignleft"><span class="octicon octicon-link"></span></a>instance.setTitleAlignLeft()</h4>
+
+<p>Alias to <code>instance.setTitleAlign(AsciiTable.LEFT)</code></p>
+
+<h4>
+<a name="instancesettitlealigncenter" class="anchor" href="#instancesettitlealigncenter"><span class="octicon octicon-link"></span></a>instance.setTitleAlignCenter()</h4>
+
+<p>Alias to <code>instance.setTitleAlign(AsciiTable.CENTER)</code></p>
+
+<h4>
+<a name="instancesettitlealignright" class="anchor" href="#instancesettitlealignright"><span class="octicon octicon-link"></span></a>instance.setTitleAlignRight()</h4>
+
+<p>Alias to <code>instance.setTitleAlign(AsciiTable.RIGHT)</code></p>
+
+<h4>
+<a name="instancesortiterator" class="anchor" href="#instancesortiterator"><span class="octicon octicon-link"></span></a>instance.sort(iterator)</h4>
+
+<ul>
+<li>
+<code>iterator</code> - sorting method to run against the rows</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="nx">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.----------------.
+| 2 | John |  34 |
+| 1 | Bob  |  52 |
+| 3 | Jim  |  83 |
+'----------------'
+</code></pre>
+
+<h4>
+<a name="instancesortcolumnindex-iterator" class="anchor" href="#instancesortcolumnindex-iterator"><span class="octicon octicon-link"></span></a>instance.sortColumn(index, iterator)</h4>
+
+<p>Sorting shortcut for targeting a specific column</p>
+
+<ul>
+<li>
+<code>index</code> - column idx to sort</li>
+<li>
+<code>iterator</code> - sorting method to run against column values</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="c1">// This is quivalent to the `sort` example above</span>
+<span class="nx">table</span><span class="p">.</span><span class="nx">sortColumn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span>
+<span class="p">})</span>
+</pre></div>
+
+<h4>
+<a name="instancesetheadingheading-" class="anchor" href="#instancesetheadingheading-"><span class="octicon octicon-link"></span></a>instance.setHeading(heading, [...])</h4>
+
+<p>Set the column headings for the table, takes arguments the same way as <code>addRow</code></p>
+
+<ul>
+<li>
+<code>heading</code> - heading array or arguments</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">setHeading</span><span class="p">(</span><span class="s1">'ID'</span><span class="p">,</span> <span class="s1">'Key'</span><span class="p">,</span> <span class="s1">'Value'</span><span class="p">)</span>
+
+<span class="c1">// or:</span>
+
+<span class="nx">table</span><span class="p">.</span><span class="nx">setHeading</span><span class="p">([</span><span class="s1">'ID'</span><span class="p">,</span> <span class="s1">'Key'</span><span class="p">,</span> <span class="s1">'Value'</span><span class="p">])</span>
+</pre></div>
+
+<h4>
+<a name="instancesetheadingaligndirection" class="anchor" href="#instancesetheadingaligndirection"><span class="octicon octicon-link"></span></a>instance.setHeadingAlign(direction)</h4>
+
+<ul>
+<li>
+<code>direction</code> - </li>
+</ul><p>Example:</p>
+
+<pre><code></code></pre>
+<h4>
+<a name="instancesetheadingalignleft" class="anchor" href="#instancesetheadingalignleft"><span class="octicon octicon-link"></span></a>instance.setHeadingAlignLeft()</h4>
+
+<p>Alias to <code>instance.setHeadingAlignLeft(AsciiTable.LEFT)</code></p>
+
+<h4>
+<a name="instancesetheadingaligncenter" class="anchor" href="#instancesetheadingaligncenter"><span class="octicon octicon-link"></span></a>instance.setHeadingAlignCenter()</h4>
+
+<p>Alias to <code>instance.setHeadingAlignLeft(AsciiTable.CENTER)</code></p>
+
+<h4>
+<a name="instancesetheadingalignright" class="anchor" href="#instancesetheadingalignright"><span class="octicon octicon-link"></span></a>instance.setHeadingAlignRight()</h4>
+
+<p>Alias to <code>instance.setHeadingAlignLeft(AsciiTable.RIGHT)</code></p>
+
+<h4>
+<a name="instanceaddrowrow-" class="anchor" href="#instanceaddrowrow-"><span class="octicon octicon-link"></span></a>instance.addRow(row, [...])</h4>
+
+<p>Rows can be added using a single array argument, or the arguments if multiple 
+args are used when calling the method.</p>
+
+<ul>
+<li>
+<code>row</code> - array or arguments of column values</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">()</span>
+
+<span class="nx">table</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span><span class="p">,</span> <span class="mi">52</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">,</span> <span class="mi">34</span><span class="p">])</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">render</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.---------------.
+| 1 | Bob  | 52 |
+| 2 | John | 34 |
+'---------------'
+</code></pre>
+
+<h4>
+<a name="instanceaddrowmatrixrows" class="anchor" href="#instanceaddrowmatrixrows"><span class="octicon octicon-link"></span></a>instance.addRowMatrix(rows)</h4>
+
+<p>Bulk <code>addRow</code> operation</p>
+
+<ul>
+<li>
+<code>rows</code> - multidimentional array of rows</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span><span class="p">.</span><span class="nx">addRowMatrix</span><span class="p">([</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">,</span> <span class="mi">34</span><span class="p">]</span>
+<span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'Jim'</span><span class="p">,</span> <span class="mi">83</span><span class="p">]</span>
+<span class="p">])</span>
+
+</pre></div>
+
+<h4>
+<a name="instancesetjustifyenabled" class="anchor" href="#instancesetjustifyenabled"><span class="octicon octicon-link"></span></a>instance.setJustify(enabled)</h4>
+
+<p>Justify all columns to be the same width</p>
+
+<ul>
+<li>
+<code>enabled</code> - boolean for turning justify on or off, <code>undefined</code> considered true</li>
+</ul><p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">table</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'two'</span><span class="p">,</span> <span class="s1">'three'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">setJustify</span><span class="p">()</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span>
+</pre></div>
+
+<pre><code>.-----------------------.
+| 1     | two   | three |
+'-----------------------'
+</code></pre>
+
+<h4>
+<a name="instancetostring" class="anchor" href="#instancetostring"><span class="octicon octicon-link"></span></a>instance.toString()</h4>
+
+<p>Render the instance as a string for output</p>
+
+<p><strong>Alias</strong>: [<code>valueOf</code>, <code>render</code>]</p>
+
+<h4>
+<a name="instancetojson" class="anchor" href="#instancetojson"><span class="octicon octicon-link"></span></a>instance.toJSON()</h4>
+
+<p>Return the JSON representation of the table, this also allows us to call 
+<code>JSON.stringify</code> on the instance.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
+
+<span class="nx">table</span>
+  <span class="p">.</span><span class="nx">setHeading</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'Steve'</span><span class="p">)</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">toJSON</span><span class="p">())</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">table</span><span class="p">))</span>
+</pre></div>
+
+<div class="highlight highlight-js"><pre><span class="p">{</span>
+  <span class="nx">title</span><span class="o">:</span> <span class="s1">'Title'</span>
+<span class="p">,</span> <span class="nx">heading</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span> <span class="p">]</span>
+<span class="p">,</span> <span class="nx">rows</span><span class="o">:</span> <span class="p">[</span> 
+    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span> <span class="p">]</span>
+  <span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'Steve'</span> <span class="p">]</span> 
+  <span class="p">]</span> 
+<span class="p">}</span>
+</pre></div>
+
+<pre><code>{"title":"Title","heading":["id","name"],"rows":[[1,"Bob"],[2,"Steve"]]}
+</code></pre>
+
+<h4>
+<a name="instancefromjsonjson" class="anchor" href="#instancefromjsonjson"><span class="octicon octicon-link"></span></a>instance.fromJSON(json)</h4>
+
+<p>Populate the table from json, should match the <code>toJSON</code> output above.</p>
+
+<p><strong>Alias</strong>: [<code>parse</code>]</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AsciiTable</span><span class="p">().</span><span class="nx">fromJSON</span><span class="p">({</span>
+  <span class="nx">title</span><span class="o">:</span> <span class="s1">'Title'</span>
+<span class="p">,</span> <span class="nx">heading</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'name'</span> <span class="p">]</span>
+<span class="p">,</span> <span class="nx">rows</span><span class="o">:</span> <span class="p">[</span> 
+    <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'Bob'</span> <span class="p">]</span>
+  <span class="p">,</span> <span class="p">[</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'Steve'</span> <span class="p">]</span> 
+  <span class="p">]</span> 
+<span class="p">})</span>
+</pre></div>
+
+<h4>
+<a name="instanceclear" class="anchor" href="#instanceclear"><span class="octicon octicon-link"></span></a>instance.clear()</h4>
+
+<p>Clear / reset all table data</p>
+
+<p><strong>Alias</strong>: [<code>reset</code>]</p>
+
+<h4>
+<a name="instanceclearrows" class="anchor" href="#instanceclearrows"><span class="octicon octicon-link"></span></a>instance.clearRows()</h4>
+
+<p>Reset all row data, maintains title and headings.</p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>With <a href="https://npmjs.org">npm</a></p>
+
+<pre><code>npm install ascii-table
+</code></pre>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2013 Beau Sorensen</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/sorensen/ascii-table/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/sorensen/ascii-table/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/sorensen/ascii-table"></a> is maintained by <a href="https://github.com/sorensen">sorensen</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
