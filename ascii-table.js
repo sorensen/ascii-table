@@ -203,6 +203,7 @@ AsciiTable.prototype.clear = function(name) {
   } else if (toString.call(name) === '[object Object]') {
     this.fromJSON(name)
   }
+  return this
 }
 
 /**
