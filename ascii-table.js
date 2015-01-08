@@ -396,7 +396,32 @@ AsciiTable.prototype.addRowMatrix = function(rows) {
   return this
 }
 
-/**
+  /**
+   * Add rows from the given data array, processed by the callback function rowCallback.
+   *
+   * @param {Array} data
+   * @param (Function) rowCallback
+   * @param (Boolean) asMatrix - controls if the row created by rowCallback should be assigned as row matrix
+   * @api public
+   */
+
+  AsciiTable.prototype.addData = function(data, rowCallback, asMatrix) {
+    if(Object.prototype.toString.call( data ) !== '[object Array]') {
+
+      return this;
+    }
+    for (var index = 0, limit = data.length; index < limit; index++) {
+      var row = rowCallback(data[index]);
+      if(asMatrix) {
+        this.addRowMatrix(row);
+      } else {
+        this.addRow(row);
+      }
+    }
+    return this
+  }
+
+  /**
  * Reset the current row state
  *
  * @api public
