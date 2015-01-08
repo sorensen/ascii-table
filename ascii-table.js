@@ -84,7 +84,7 @@ AsciiTable.align = function(dir, str, len, pad) {
 
 AsciiTable.alignLeft = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   return str + Array(len + 1 - str.length).join(pad)
@@ -101,7 +101,7 @@ AsciiTable.alignLeft = function(str, len, pad) {
 
 AsciiTable.alignCenter = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var nLen = str.length
@@ -125,7 +125,7 @@ AsciiTable.alignCenter = function(str, len, pad) {
 
 AsciiTable.alignRight = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   return Array(len + 1 - str.length).join(pad) + str
@@ -141,7 +141,7 @@ AsciiTable.alignRight = function(str, len, pad) {
  */
 
 AsciiTable.alignAuto = function(str, len, pad) {
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   var type = toString.call(str)
   pad || (pad = ' ')
   len = +len
