@@ -34,7 +34,7 @@ function AsciiTable(name, options) {
  * Current library version, should match `package.json`
  */
 
-AsciiTable.VERSION = '0.0.4'
+AsciiTable.VERSION = '0.0.5'
 
 /*!
  * Alignment constants
@@ -207,6 +207,7 @@ AsciiTable.prototype.clear = function(name) {
   } else if (toString.call(name) === '[object Object]') {
     this.fromJSON(name)
   }
+  return this
 }
 
 /**

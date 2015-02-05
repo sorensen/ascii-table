@@ -200,6 +200,20 @@ describe('Ascii Table v' + info.version, function() {
       ase(table instanceof AsciiTable, true)
       ase(table.getTitle(), 'title')
     })
+
+    it('#factory with object', function() {
+      var obj = {
+        title: 'foo',
+        heading: ['id', 'name'],
+        rows: [
+          [1, 'bob'],
+          [2, 'jim']
+        ]
+      }
+      var table = AsciiTable.factory(obj)
+      ase(table instanceof AsciiTable, true)
+      ase(table.getTitle(), 'foo')
+    })
   })
 
   describe('Instance methods', function() {
