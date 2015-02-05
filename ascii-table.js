@@ -34,7 +34,7 @@ function AsciiTable(name, options) {
  * Current library version, should match `package.json`
  */
 
-AsciiTable.VERSION = '0.0.5'
+AsciiTable.VERSION = '0.0.6'
 
 /*!
  * Alignment constants
@@ -91,6 +91,8 @@ AsciiTable.alignLeft = function(str, len, pad) {
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
+  var alen = len + 1 - str.length
+  if (alen <= 0) return str
   return str + Array(len + 1 - str.length).join(pad)
 }
 
@@ -132,6 +134,8 @@ AsciiTable.alignRight = function(str, len, pad) {
   if (typeof str === 'undefined') str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
+  var alen = len + 1 - str.length
+  if (alen <= 0) return str
   return Array(len + 1 - str.length).join(pad) + str
 }
 

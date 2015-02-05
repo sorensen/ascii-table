@@ -161,6 +161,9 @@ describe('Ascii Table v' + info.version, function() {
 
       var str = AsciiTable.alignLeft('bar', 10, '-')
       ase(str, 'bar-------')
+
+      var str = AsciiTable.alignLeft('meow', 1, '-')
+      ase(str, 'meow')
     })
 
     it('#alignRight', function() {
@@ -169,6 +172,9 @@ describe('Ascii Table v' + info.version, function() {
 
       var str = AsciiTable.alignRight('bar', 10, '-')
       ase(str, '-------bar')
+
+      var str = AsciiTable.alignRight('meow', 1, '-')
+      ase(str, 'meow')
     })
 
     it('#alignCenter', function() {
