@@ -19,11 +19,14 @@ var slice = Array.prototype.slice
  * AsciiTable constructor
  *
  * @param {String|Object} title or JSON table
+ * @param {Object} table options
+ *  - `prefix` - string prefix added to each line on render
  * @constructor
  * @api public
  */
 
-function AsciiTable(name) {
+function AsciiTable(name, options) {
+  this.options = options || {}
   this.reset(name)
 }
 
@@ -49,11 +52,12 @@ AsciiTable.RIGHT = 2
  * Create a new table instance
  *
  * @param {String|Object} title or JSON table
+ * @param {Object} table options
  * @api public
  */
 
-AsciiTable.factory = function(name) {
-  return new AsciiTable(name)
+AsciiTable.factory = function(name, options) {
+  return new AsciiTable(name, options)
 }
 
 /**
@@ -506,7 +510,9 @@ AsciiTable.prototype.toString = function() {
     body.push(this._renderRow(this.__rows[i], ' '))
   }
   border && body.push(this._seperator(total - mLen + 1, this.__bottom))
-  return body.join('\n')
+
+  var prefix = this.options.prefix || ''
+  return prefix + body.join('\n' + prefix)
 }
 
 /**

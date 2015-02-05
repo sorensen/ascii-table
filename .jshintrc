@@ -18,6 +18,7 @@
 , "loopfunc": true
 , "boss": true
 , "validthis": true
+, "unused": "vars"
 , "globals": {
     "describe": false
   , "it": false

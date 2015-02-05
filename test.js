@@ -47,6 +47,30 @@ describe('Ascii Table v' + info.version, function() {
       ase(table2.toString(), output)
     })
 
+    it('prefixed', function() {
+      var table = new AsciiTable('A Title', {
+        prefix: '    '
+      })
+      table
+        .setHeading('', 'Name', 'Age')
+        .addRow(1, 'Bob', 52)
+        .addRow(2, 'John', 34)
+        .addRow(3, 'Jim', 83)
+
+      var output = ''
+             + '    .----------------.'
+      + '\n' + '    |    A Title     |'
+      + '\n' + '    |----------------|'
+      + '\n' + '    |   | Name | Age |'
+      + '\n' + '    |---|------|-----|'
+      + '\n' + '    | 1 | Bob  |  52 |'
+      + '\n' + '    | 2 | John |  34 |'
+      + '\n' + '    | 3 | Jim  |  83 |'
+      + '\n' + "    '----------------'"
+      
+      ase(table.toString(), output)
+    })
+
     it('all', function() {
       var table = new AsciiTable('Something')
       table

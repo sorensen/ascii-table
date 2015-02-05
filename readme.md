@@ -22,7 +22,6 @@ Table of Contents
     * [alignRight(val, len, [pad])](#asciitablealignrightval-len-pad)
     * [alignAuto(val, len, [pad])](#asciitablealignautoval-len-pad)
     * [arrayFill(len, [val])](#asciitablearrayfilllen-val)
-    
   - [Instance Methods](#instance-methods)
     * [setBorder([edge], [fill], [top], [bottom])](#instancesetborderedge-fill-top-bottom)
     * [removeBorder()](#instanceremoveborder)
@@ -51,6 +50,8 @@ Table of Contents
     * [fromJSON(obj)](#instancefromjsonobj)
     * [clear()](#instanceclear)
     * [clearRows()](#instanceclearrows)
+* [Install](#install)
+* [License](#license)
 
 Usage
 -----
@@ -132,11 +133,13 @@ API
 
 See: `AsciiTable.factory` for details on instantiation
 
-#### AsciiTable.factory([title])
+#### AsciiTable.factory([title], [options])
 
 Table instance creator
 
 * `title` - table title (optional, default `null`)
+* `options` - table options (optional)
+  - `prefix` - string prefix to add to each line on render
 
 ***Note:*** If an object is passed in place of the `title`, the `fromJSON` 
 method will be used to populate the table.
