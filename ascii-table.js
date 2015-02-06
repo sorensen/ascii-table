@@ -34,7 +34,7 @@ function AsciiTable(name, options) {
  * Current library version, should match `package.json`
  */
 
-AsciiTable.VERSION = '0.0.6'
+AsciiTable.VERSION = '0.0.7'
 
 /*!
  * Alignment constants
@@ -404,30 +404,29 @@ AsciiTable.prototype.addRowMatrix = function(rows) {
   return this
 }
 
-  /**
-   * Add rows from the given data array, processed by the callback function rowCallback.
-   *
-   * @param {Array} data
-   * @param (Function) rowCallback
-   * @param (Boolean) asMatrix - controls if the row created by rowCallback should be assigned as row matrix
-   * @api public
-   */
+/**
+ * Add rows from the given data array, processed by the callback function rowCallback.
+ *
+ * @param {Array} data
+ * @param (Function) rowCallback
+ * @param (Boolean) asMatrix - controls if the row created by rowCallback should be assigned as row matrix
+ * @api public
+ */
 
-  AsciiTable.prototype.addData = function(data, rowCallback, asMatrix) {
-    if(Object.prototype.toString.call( data ) !== '[object Array]') {
-
-      return this;
-    }
-    for (var index = 0, limit = data.length; index < limit; index++) {
-      var row = rowCallback(data[index]);
-      if(asMatrix) {
-        this.addRowMatrix(row);
-      } else {
-        this.addRow(row);
-      }
-    }
-    return this
+AsciiTable.prototype.addData = function(data, rowCallback, asMatrix) {
+  if (toString.call(data) !== '[object Array]') {
+    return this;
   }
+  for (var index = 0, limit = data.length; index < limit; index++) {
+    var row = rowCallback(data[index]);
+    if(asMatrix) {
+      this.addRowMatrix(row);
+    } else {
+      this.addRow(row);
+    }
+  }
+  return this
+}
 
   /**
  * Reset the current row state
