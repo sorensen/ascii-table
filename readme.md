@@ -51,6 +51,7 @@ Table of Contents
     * [clear()](#instanceclear)
     * [clearRows()](#instanceclearrows)
 * [Install](#install)
+* [Contributors](#contributors)
 * [License](#license)
 
 Usage
@@ -618,6 +619,12 @@ With [npm](https://npmjs.org)
 ```
 npm install ascii-table
 ```
+
+
+Contributors
+------------
+
+[Matthew Oliveira](https://github.com/m4olivei)
 
 
 License

@@ -7,6 +7,12 @@
   , "ascii"
   , "console"
   ]
+, "contributors": [
+    {
+      "name": "Matthew Oliveira"
+    , "github": "https://github.com/m4olivei"
+    }
+  ]
 , "author": "Beau Sorensen <mail@beausorensen.com> (http://github.com/sorensen)"
 , "description": "Easy tables for your console data"
 , "repository": {
