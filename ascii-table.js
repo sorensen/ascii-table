@@ -88,7 +88,7 @@ AsciiTable.align = function(dir, str, len, pad) {
 
 AsciiTable.alignLeft = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var alen = len + 1 - str.length
@@ -107,7 +107,7 @@ AsciiTable.alignLeft = function(str, len, pad) {
 
 AsciiTable.alignCenter = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var nLen = str.length
@@ -131,7 +131,7 @@ AsciiTable.alignCenter = function(str, len, pad) {
 
 AsciiTable.alignRight = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var alen = len + 1 - str.length
@@ -149,7 +149,7 @@ AsciiTable.alignRight = function(str, len, pad) {
  */
 
 AsciiTable.alignAuto = function(str, len, pad) {
-  if (typeof str === 'undefined') str = ''
+  if (!str) str = ''
   var type = toString.call(str)
   pad || (pad = ' ')
   len = +len
@@ -404,7 +404,32 @@ AsciiTable.prototype.addRowMatrix = function(rows) {
   return this
 }
 
-/**
+  /**
+   * Add rows from the given data array, processed by the callback function rowCallback.
+   *
+   * @param {Array} data
+   * @param (Function) rowCallback
+   * @param (Boolean) asMatrix - controls if the row created by rowCallback should be assigned as row matrix
+   * @api public
+   */
+
+  AsciiTable.prototype.addData = function(data, rowCallback, asMatrix) {
+    if(Object.prototype.toString.call( data ) !== '[object Array]') {
+
+      return this;
+    }
+    for (var index = 0, limit = data.length; index < limit; index++) {
+      var row = rowCallback(data[index]);
+      if(asMatrix) {
+        this.addRowMatrix(row);
+      } else {
+        this.addRow(row);
+      }
+    }
+    return this
+  }
+
+  /**
  * Reset the current row state
  *
  * @api public

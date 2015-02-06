@@ -43,8 +43,61 @@ describe('Ascii Table v' + info.version, function() {
         .addRow(row)
         .addRowMatrix(matrix)
 
+
+
+
+
       ase(table.toString(), output)
       ase(table2.toString(), output)
+
+    })
+
+    it('dataObjects', function() {
+      var defaultOutput = ''
+          + '.----------------.'
+          + '\n' + '|    A Title     |'
+          + '\n' + '|----------------|'
+          + '\n' + '|   | Name | Age |'
+          + '\n' + '|---|------|-----|'
+          + '\n' + '| 1 | Bob  |  52 |'
+          + '\n' + '| 2 | John |  34 |'
+          + '\n' + '| 3 | Jim  |  83 |'
+          + '\n' + "'----------------'"
+
+      var matrixOutput = ''
+          + '.----------------.'
+          + '\n' + '|    A Title     |'
+          + '\n' + '|----------------|'
+          + '\n' + '|   | Name | Age |'
+          + '\n' + '|---|------|-----|'
+          + '\n' + '| 1 | Bob  |  52 |'
+          + '\n' + '| 2 | John |  34 |'
+          + '\n' + '|   |      |  83 |'
+          + '\n' + "'----------------'"
+
+      var arrayData = [
+        {index: 2, name: 'John', age: 34, secondAge: 83}
+        , {index: 3, name: 'Jim', age: 83}
+      ]
+
+      var table = new AsciiTable('A Title')
+          , headings = ['', 'Name', 'Age']
+          , row = [1, 'Bob', 52]
+
+      table
+          .setHeading(headings)
+          .addRow(row)
+          .addData(arrayData, function(data) {return [data.index, data.name, data.age]})
+
+      var table2 = new AsciiTable('A Title')
+
+      table2
+          .setHeading(headings)
+          .addRow(row)
+          .addData([{index: 2, name: 'John', age: 34, secondAge: 83}], function(data) {return [[data.index, data.name, data.age], ["", "", data.secondAge]]}, true)
+
+      ase(table.toString(), defaultOutput)
+      ase(table2.toString(), matrixOutput)
     })
 
     it('prefixed', function() {
@@ -159,6 +212,9 @@ describe('Ascii Table v' + info.version, function() {
       var str = AsciiTable.alignLeft('foo', 30)
       ase(str, 'foo                           ')
 
+      var str = AsciiTable.alignLeft(null, 30)
+      ase(str, '                              ')
+
       var str = AsciiTable.alignLeft('bar', 10, '-')
       ase(str, 'bar-------')
 
@@ -170,6 +226,9 @@ describe('Ascii Table v' + info.version, function() {
       var str = AsciiTable.alignRight('foo', 30)
       ase(str, '                           foo')
 
+      var str = AsciiTable.alignRight(null, 30)
+      ase(str, '                              ')
+
       var str = AsciiTable.alignRight('bar', 10, '-')
       ase(str, '-------bar')
 
@@ -180,6 +239,10 @@ describe('Ascii Table v' + info.version, function() {
     it('#alignCenter', function() {
       var str = AsciiTable.alignCenter('foo', 30)
       ase(str, '             foo              ')
+
+      var str = AsciiTable.alignCenter(null, 30)
+      ase(str, '                              ')
+
 
       var str = AsciiTable.alignCenter('bar', 10, '-')
       ase(str, '---bar----')

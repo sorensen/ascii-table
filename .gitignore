@@ -8,6 +8,9 @@
 *.swp
 *.vi
 *~
+*.iml
+*.ipr
+*.iws
 
 # OS or Editor folders
 .DS_Store
