@@ -625,6 +625,7 @@ Contributors
 ------------
 
 [Matthew Oliveira](https://github.com/m4olivei)
+[Peter Daum](https://github.com/coders-kitchen)
 
 
 License

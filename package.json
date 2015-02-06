@@ -12,6 +12,10 @@
       "name": "Matthew Oliveira"
     , "github": "https://github.com/m4olivei"
     }
+  , {
+      "name": "Peter Daum"
+    , "github": "https://github.com/coders-kitchen"
+    }
   ]
 , "author": "Beau Sorensen <mail@beausorensen.com> (http://github.com/sorensen)"
 , "description": "Easy tables for your console data"
