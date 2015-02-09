@@ -34,7 +34,7 @@ function AsciiTable(name, options) {
  * Current library version, should match `package.json`
  */
 
-AsciiTable.VERSION = '0.0.7'
+AsciiTable.VERSION = '0.0.8'
 
 /*!
  * Alignment constants
@@ -88,7 +88,7 @@ AsciiTable.align = function(dir, str, len, pad) {
 
 AsciiTable.alignLeft = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (!str) str = ''
+  if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var alen = len + 1 - str.length
@@ -107,7 +107,7 @@ AsciiTable.alignLeft = function(str, len, pad) {
 
 AsciiTable.alignCenter = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (!str) str = ''
+  if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var nLen = str.length
@@ -131,7 +131,7 @@ AsciiTable.alignCenter = function(str, len, pad) {
 
 AsciiTable.alignRight = function(str, len, pad) {
   if (!len || len < 0) return ''
-  if (!str) str = ''
+  if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
   var alen = len + 1 - str.length
@@ -149,7 +149,7 @@ AsciiTable.alignRight = function(str, len, pad) {
  */
 
 AsciiTable.alignAuto = function(str, len, pad) {
-  if (!str) str = ''
+  if (str === undefined || str === null) str = ''
   var type = toString.call(str)
   pad || (pad = ' ')
   len = +len

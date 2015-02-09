@@ -16,7 +16,7 @@ describe('Ascii Table v' + info.version, function() {
         .setHeading('', 'Name', 'Age')
         .addRow(1, 'Bob', 52)
         .addRow(2, 'John', 34)
-        .addRow(3, 'Jim', 83)
+        .addRow(3, 'Jim', 0)
 
       var output = ''
              + '.----------------.'
@@ -26,7 +26,7 @@ describe('Ascii Table v' + info.version, function() {
       + '\n' + '|---|------|-----|'
       + '\n' + '| 1 | Bob  |  52 |'
       + '\n' + '| 2 | John |  34 |'
-      + '\n' + '| 3 | Jim  |  83 |'
+      + '\n' + '| 3 | Jim  |   0 |'
       + '\n' + "'----------------'"
 
       var table2 = new AsciiTable('A Title')
@@ -35,17 +35,13 @@ describe('Ascii Table v' + info.version, function() {
 
       var matrix = [
         [2, 'John', 34]
-      , [3, 'Jim', 83]
+      , [3, 'Jim', 0]
       ]
 
       table2
         .setHeading(headings)
         .addRow(row)
         .addRowMatrix(matrix)
-
-
-
-
 
       ase(table.toString(), output)
       ase(table2.toString(), output)
@@ -54,7 +50,7 @@ describe('Ascii Table v' + info.version, function() {
 
     it('dataObjects', function() {
       var defaultOutput = ''
-          + '.----------------.'
+                 + '.----------------.'
           + '\n' + '|    A Title     |'
           + '\n' + '|----------------|'
           + '\n' + '|   | Name | Age |'
@@ -65,7 +61,7 @@ describe('Ascii Table v' + info.version, function() {
           + '\n' + "'----------------'"
 
       var matrixOutput = ''
-          + '.----------------.'
+                 + '.----------------.'
           + '\n' + '|    A Title     |'
           + '\n' + '|----------------|'
           + '\n' + '|   | Name | Age |'
