@@ -578,9 +578,9 @@ console.log(JSON.stringify(table))
 ```
 
 
-#### instance.fromJSON(json)
+#### instance.fromJSON(obj)
 
-Populate the table from json, should match the `toJSON` output above.
+Populate the table from json object, should match the `toJSON` output above.
 
 **Alias**: [`parse`]
 
