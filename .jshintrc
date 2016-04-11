@@ -1,26 +1,34 @@
 {
   "node": true
 , "asi": true
+, "esnext": true
 , "nonstandard": true
-, "strict": false
+, "strict": true
 , "smarttabs": true
-, "maxlen": 1800
+, "maxlen": 180
+, "maxparams": 5
 , "newcap": false
-, "expr": true
 , "undef": true
-, "unused": false
+, "unused": "vars"
 , "onecase": true
+, "indent": 2
 , "laxcomma": true
 , "laxbreak": true
 , "white": false
 , "shadow": true
 , "proto": true
-, "loopfunc": true
+, "sub": false
 , "boss": true
+, "expr": true
+, "lastsemic": true
+, "notypeof": true
 , "validthis": true
-, "unused": "vars"
 , "globals": {
     "describe": false
   , "it": false
+  , "before": false
+  , "beforeEach": false
+  , "after": false
+  , "afterEach": false
   }
 }

@@ -1,34 +1,39 @@
 {
-  "name": "ascii-table"
-, "version": "0.0.9"
-, "license": "MIT"
-, "keywords": [
-    "table"
-  , "ascii"
-  , "console"
-  ]
-, "contributors": [
+  "name": "ascii-table",
+  "version": "0.0.9",
+  "author": "Beau Sorensen <mail@beausorensen.com> (http://github.com/sorensen)",
+  "description": "Easy tables for your console data",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sorensen/ascii-table.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "table",
+    "ascii",
+    "console"
+  ],
+  "contributors": [
     {
-      "name": "Matthew Oliveira"
-    , "github": "https://github.com/m4olivei"
+      "name": "Matthew Oliveira",
+      "github": "https://github.com/m4olivei"
+    },
+    {
+      "name": "Peter Daum",
+      "github": "https://github.com/coders-kitchen"
     }
-  , {
-      "name": "Peter Daum"
-    , "github": "https://github.com/coders-kitchen"
-    }
-  ]
-, "author": "Beau Sorensen <mail@beausorensen.com> (http://github.com/sorensen)"
-, "description": "Easy tables for your console data"
-, "repository": {
-    "type": "git"
-  , "url": "git://github.com/sorensen/ascii-table.git"
-  }
-, "main": "index.js"
-, "scripts": {
-    "test": "make test"
-  }
-, "devDependencies": {
-    "mocha": "*"
-  }
-, "dependencies": {}
+  ],
+  "main": "index.js",
+  "scripts": {
+    "mocha": "./node_modules/.bin/mocha -R spec test.js",
+    "hint": "./node_modules/.bin/jshint ./",
+    "test": "npm run hint && npm run mocha",
+    "build": "echo -n ';' > ascii-table.min.js && ./node_modules/.bin/uglifyjs2 ascii-table.js -o ascii-table.min.js -c -m"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "uglify-js2": "^2.1.11"
+  },
+  "dependencies": {}
 }
