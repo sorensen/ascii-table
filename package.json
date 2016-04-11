@@ -1,6 +1,6 @@
 {
   "name": "ascii-table"
-, "version": "0.0.8"
+, "version": "0.0.9"
 , "license": "MIT"
 , "keywords": [
     "table"
@@ -22,9 +22,6 @@
 , "repository": {
     "type": "git"
   , "url": "git://github.com/sorensen/ascii-table.git"
-  }
-, "engines": {
-    "node": "0.x"
   }
 , "main": "index.js"
 , "scripts": {
