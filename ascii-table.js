@@ -31,12 +31,6 @@ function AsciiTable(name, options) {
 }
 
 /*!
- * Current library version, should match `package.json`
- */
-
-AsciiTable.VERSION = '0.0.8'
-
-/*!
  * Alignment constants
  */
 

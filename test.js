@@ -192,12 +192,6 @@ describe('Ascii Table v' + info.version, function() {
 
   describe('Static methods', function() {
 
-    it('#version', function() {
-      ase(info.version, AsciiTable.VERSION)
-      ase(info.version, require('./ascii-table.min').VERSION)
-      ase(info.version, require('./bower.json').version)
-    })
-
     it('#align', function() {
       ase(AsciiTable.align(AsciiTable.LEFT, 'a', 10), AsciiTable.alignLeft('a', 10))
       ase(AsciiTable.align(AsciiTable.CENTER, 'a', 10), AsciiTable.alignCenter('a', 10))
