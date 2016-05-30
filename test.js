@@ -125,7 +125,7 @@ describe('Ascii Table v' + info.version, function() {
       table
         .setBorder()
         .removeBorder()
-        .setAlign(0, AsciiTable.CENTER)
+        .setAlignHorizontal(0, AsciiTable.CENTER)
         .setAlignLeft(1)
         .setAlignCenter(1)
         .setAlignRight(1)
@@ -169,7 +169,7 @@ describe('Ascii Table v' + info.version, function() {
         .setHeading('', 'Name', 'Age')
         .setHeadingAlign(AsciiTable.RIGHT)
         .setAlignCenter(0)
-        .setAlign(2, AsciiTable.RIGHT)
+        .setAlignHorizontal(2, AsciiTable.RIGHT)
         .addRow('a', 'apple', 'Some longer string')
         .addRow('b', 'banana', 'hi')
         .addRow('c', 'carrot', 'meow')
@@ -188,14 +188,42 @@ describe('Ascii Table v' + info.version, function() {
       + "\n" + "'--------------------------------------'"
       ase(str, table.toString())
     })
+
+    it('multiline', function() {
+      var table = new AsciiTable()
+      table
+        .setTitle('Haikus')
+        .setHeading('Author', 'Haiku')
+        .setAlignCenter(1)
+        .addRow('Basho', 'From time to time\nThe clouds give rest\nTo the moon-beholders.')
+        .addRow('Issa', 'The wren\nEarns his living\nNoiselessly.')
+        .setBorder('|', '=')
+        .enableRowSeparator()
+
+      var str = ""
+             + ".=================================."
+      + "\n" + "|             Haikus              |"
+      + "\n" + "|=================================|"
+      + "\n" + "| Author |         Haiku          |"
+      + "\n" + "|========|========================|"
+      + "\n" + "|        |   From time to time    |"
+      + "\n" + "| Basho  |  The clouds give rest  |"
+      + "\n" + "|        | To the moon-beholders. |"
+      + "\n" + "|--------|------------------------|"
+      + "\n" + "|        |        The wren        |"
+      + "\n" + "| Issa   |    Earns his living    |"
+      + "\n" + "|        |      Noiselessly.      |"
+      + "\n" + "'================================='"
+      ase(table.toString(), str)
+    })
   })
 
   describe('Static methods', function() {
 
     it('#align', function() {
-      ase(AsciiTable.align(AsciiTable.LEFT, 'a', 10), AsciiTable.alignLeft('a', 10))
-      ase(AsciiTable.align(AsciiTable.CENTER, 'a', 10), AsciiTable.alignCenter('a', 10))
-      ase(AsciiTable.align(AsciiTable.RIGHT, 'a', 10), AsciiTable.alignRight('a', 10))
+      ase(AsciiTable.alignHorizontal(AsciiTable.LEFT, 'a', 10), AsciiTable.alignLeft('a', 10))
+      ase(AsciiTable.alignHorizontal(AsciiTable.CENTER, 'a', 10), AsciiTable.alignCenter('a', 10))
+      ase(AsciiTable.alignHorizontal(AsciiTable.RIGHT, 'a', 10), AsciiTable.alignRight('a', 10))
     })
 
     it('#alignLeft', function() {
@@ -300,7 +328,7 @@ describe('Ascii Table v' + info.version, function() {
       
     })
 
-    it('#setAlign', function() {
+    it('#setAlignHorizontal', function() {
       
     })
 
