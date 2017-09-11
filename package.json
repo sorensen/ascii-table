@@ -35,5 +35,7 @@
     "mocha": "^2.4.5",
     "uglify-js2": "^2.1.11"
   },
-  "dependencies": {}
+  "dependencies": {
+    "string-length": "^2.0.0"
+  }
 }
